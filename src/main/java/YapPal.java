@@ -17,8 +17,9 @@ public class YapPal {
     }
 
     // operation constants
-    private static String[] itemList = new String[100];
-    private static int itemListPtr = 0;
+    private static final int MAX_LIST_LEN = 100;
+    private static Task[] taskList = new Task[MAX_LIST_LEN];
+    private static int taskListPtr = 0;
 
     public static void main(String[] args) {
         // initialisation
@@ -49,16 +50,17 @@ public class YapPal {
 
     private static void list() {
         String output = "";
-        for (int i = 0; i < YapPal.itemListPtr; ++i) {
-            output += (i+1) + ". " + YapPal.itemList[i] + "\n";
+        for (int i = 0; i < YapPal.taskListPtr; ++i) {
+            output += (i+1) + ". " + YapPal.taskList[i] + "\n";
         }
         YapPal.printMsg(output);
     }
 
     private static void addToList(String item) {
-        YapPal.itemList[YapPal.itemListPtr] = item;
-        ++YapPal.itemListPtr;
-        YapPal.printMsg("added: " + item);
+        Task toAdd = new Task(item);
+        YapPal.taskList[YapPal.taskListPtr] = toAdd;
+        ++YapPal.taskListPtr;
+        YapPal.printMsg("added: " + toAdd);
     }
 
     private static void printMsg(String msg) {
