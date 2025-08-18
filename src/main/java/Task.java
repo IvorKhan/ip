@@ -1,26 +1,29 @@
 public class Task {
     private String name;
-    private boolean mark;
+    private boolean marked;
 
     public Task(String name) {
         this.name = name;
-        this.mark = false;
+        this.marked = false;
     }
 
     public void mark() {
-        this.mark = true;
+        this.marked = true;
     }
 
     public void unmark() {
-        this.mark = false;
+        this.marked = false;
     }
 
     public boolean isMarked() {
-        return this.mark;
+        return this.marked;
     }
 
     @Override
     public String toString() {
-        return this.name;
+        if (this.isMarked()) {
+            return "[X] " + this.name;
+        }
+        return "[ ] " + this.name;
     }
 }

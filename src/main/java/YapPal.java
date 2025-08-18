@@ -42,6 +42,12 @@ public class YapPal {
         }
         if (command.equals("list")) {
             YapPal.list();
+        } else if (command.length() > 4 && command.startsWith("mark")) {
+            int taskIndex = Integer.parseInt(command.substring(5));
+            YapPal.mark(taskIndex);
+        } else if (command.length() > 6 && command.startsWith("unmark")) {
+            int taskIndex = Integer.parseInt(command.substring(7));
+            YapPal.unmark(taskIndex);
         } else {
             YapPal.addToList(command);
         }
@@ -61,6 +67,22 @@ public class YapPal {
         YapPal.taskList[YapPal.taskListPtr] = toAdd;
         ++YapPal.taskListPtr;
         YapPal.printMsg("added: " + toAdd);
+    }
+
+    private static void mark(int ptr) {
+        YapPal.taskList[ptr - 1].mark();
+        YapPal.printMsg(
+            "Nice! I've marked this task as done: \n" +
+            taskList[ptr - 1]
+        );
+    }
+
+    private static void unmark(int ptr) {
+        YapPal.taskList[ptr - 1].unmark();
+        YapPal.printMsg(
+            "OK, I've marked this task as not done yet: \n" +
+            taskList[ptr - 1]
+        );
     }
 
     private static void printMsg(String msg) {
