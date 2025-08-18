@@ -14,12 +14,21 @@ public class YapPal {
     private static final int TERMINATE = -1;
     private static final int LISTENING = 0;
 
+    // operation constants
+    private static String[] itemList = new String[100];
+    private static int itemListPtr = 0;
+
     public static void main(String[] args) {
+        // initialisation
         YapPal.printMsg(YapPal.INTRO_MSG);
         int state = YapPal.LISTENING;
+
+        // listening loop
         while (state != YapPal.TERMINATE) {
             state = YapPal.listen();
         }
+
+        // termination
         YapPal.printMsg(YapPal.GOODBYE_MSG);
     }
 
@@ -28,8 +37,26 @@ public class YapPal {
         if (command.equals("bye")) {
             return YapPal.TERMINATE;
         }
-        YapPal.printMsg(command);
+        if (command.equals("list")) {
+            YapPal.list();
+        } else {
+            YapPal.addToList(command);
+        }
         return YapPal.LISTENING;
+    }
+
+    public static void list() {
+        String output = "";
+        for (int i = 0; i < YapPal.itemListPtr; ++i) {
+            output += (i+1) + ". " + YapPal.itemList[i] + "\n";
+        }
+        YapPal.printMsg(output);
+    }
+
+    public static void addToList(String item) {
+        YapPal.itemList[YapPal.itemListPtr] = item;
+        ++YapPal.itemListPtr;
+        YapPal.printMsg("added: " + item);
     }
 
     public static void printMsg(String msg) {
