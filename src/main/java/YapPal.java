@@ -1,16 +1,22 @@
 public class YapPal {
+    // public state
+    public static final String botName = "YapPal";
+    public static final String introMsg =
+        "Hello! I'm " + botName + "\n" +
+        "What can I do for you?";
+    public static final String goodbyeMsg =
+        "Hope to see you again soon!";
+
     public static void main(String[] args) {
-        String botName = "YapPal";
-        String introMsg =
+        YapPal.printMsg(introMsg);
+        YapPal.printMsg(goodbyeMsg);
+    }
+
+    public static void printMsg(String msg) {
+        System.out.println(
             "____________________________________________________________ \n" +
-            "Hello! I'm " + botName + "\n" +
-            "What can I do for you? \n" +
-            "____________________________________________________________";
-        String goodbyeMsg =
-            "____________________________________________________________ \n" +
-            "Hope to see you again soon! \n" +
-            "____________________________________________________________";
-        System.out.println(introMsg);
-        System.out.println(goodbyeMsg);
+            msg + " \n" +
+            "____________________________________________________________ \n"
+        );
     }
 }
