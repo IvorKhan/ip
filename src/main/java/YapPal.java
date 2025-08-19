@@ -62,11 +62,34 @@ public class YapPal {
         YapPal.printMsg(output);
     }
 
-    private static void addToList(String item) {
-//        Task toAdd = new Task(item);
-//        YapPal.taskList[YapPal.taskListPtr] = toAdd;
-//        ++YapPal.taskListPtr;
-//        YapPal.printMsg("added: " + toAdd);
+    private static void addToList(String command) {
+        Task toAdd = determineTask(command);
+        if (toAdd == null) {
+            return;
+        }
+        YapPal.taskList[YapPal.taskListPtr] = toAdd;
+        ++YapPal.taskListPtr;
+        YapPal.printMsg("added: " + toAdd);
+    }
+
+    private static Task determineTask(String command) {
+        if (command.length() > 4 && command.startsWith("todo")) {
+            String taskName = command.substring(5);
+            return new ToDo(taskName);
+        } else if (command.length() > 8 && command.startsWith("deadline")) {
+            int deadlineIndex = command.indexOf('/');
+            String taskName = command.substring(9, deadlineIndex - 1);
+            String taskDeadline = command.substring(deadlineIndex + 1);
+            return new Deadline(taskName, taskDeadline);
+        } else if (command.length() > 5 && command.startsWith("event")) {
+            int startIndex = command.indexOf('/');
+            int endIndex = command.substring(startIndex + 1).indexOf('/') + startIndex + 1;
+            String taskName = command.substring(6, startIndex - 1);
+            String taskStart = command.substring(startIndex + 1, endIndex - 1);
+            String taskEnd = command.substring(endIndex + 1);
+            return new Event(taskName, taskStart, taskEnd);
+        }
+        return null;
     }
 
     private static void mark(int ptr) {
