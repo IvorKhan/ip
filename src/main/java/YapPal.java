@@ -63,10 +63,10 @@ public class YapPal {
     }
 
     private static void addToList(String item) {
-        Task toAdd = new Task(item);
-        YapPal.taskList[YapPal.taskListPtr] = toAdd;
-        ++YapPal.taskListPtr;
-        YapPal.printMsg("added: " + toAdd);
+//        Task toAdd = new Task(item);
+//        YapPal.taskList[YapPal.taskListPtr] = toAdd;
+//        ++YapPal.taskListPtr;
+//        YapPal.printMsg("added: " + toAdd);
     }
 
     private static void mark(int ptr) {
