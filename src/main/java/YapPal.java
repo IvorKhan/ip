@@ -55,11 +55,11 @@ public class YapPal {
     }
 
     private static void list() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (int i = 0; i < YapPal.taskListPtr; ++i) {
-            output += (i+1) + ". " + YapPal.taskList[i] + "\n";
+            output.append((i + 1)).append(". ").append(YapPal.taskList[i]).append("\n");
         }
-        YapPal.printMsg(output);
+        YapPal.printMsg(output.toString());
     }
 
     private static void addToList(String command) {
@@ -69,26 +69,34 @@ public class YapPal {
         }
         YapPal.taskList[YapPal.taskListPtr] = toAdd;
         ++YapPal.taskListPtr;
-        YapPal.printMsg("added: " + toAdd);
+        YapPal.printMsg("OK, I've added the following task: " + toAdd);
     }
 
     private static Task determineTask(String command) {
+        int TODO_NAME_OFFSET = 5;
+        int DEADLINE_NAME_OFFSET = 9;
+        int DEADLINE_DEADLINE_OFFSET = 4;
+        int EVENT_NAME_OFFSET = 6;
+        int EVENT_START_OFFSET = 6;
+        int EVENT_END_OFFSET = 4;
+
         if (command.length() > 4 && command.startsWith("todo")) {
-            String taskName = command.substring(5);
+            String taskName = command.substring(TODO_NAME_OFFSET);
             return new ToDo(taskName);
         } else if (command.length() > 8 && command.startsWith("deadline")) {
-            int deadlineIndex = command.indexOf('/');
-            String taskName = command.substring(9, deadlineIndex - 1);
-            String taskDeadline = command.substring(deadlineIndex + 1);
+            int deadlineIndex = command.indexOf("/by");
+            String taskName = command.substring(DEADLINE_NAME_OFFSET, deadlineIndex - 1);
+            String taskDeadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
             return new Deadline(taskName, taskDeadline);
         } else if (command.length() > 5 && command.startsWith("event")) {
-            int startIndex = command.indexOf('/');
-            int endIndex = command.substring(startIndex + 1).indexOf('/') + startIndex + 1;
-            String taskName = command.substring(6, startIndex - 1);
-            String taskStart = command.substring(startIndex + 1, endIndex - 1);
-            String taskEnd = command.substring(endIndex + 1);
+            int startIndex = command.indexOf("/from");
+            int endIndex = command.indexOf("/to");
+            String taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
+            String taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
+            String taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
             return new Event(taskName, taskStart, taskEnd);
         }
+        // if none of the above:
         return null;
     }
 
