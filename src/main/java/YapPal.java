@@ -76,9 +76,6 @@ public class YapPal {
 
     private static void list() {
         StringBuilder output = new StringBuilder();
-//        for (int i = 0; i < YapPal.taskListPtr; ++i) {
-//            output.append((i + 1)).append(". ").append(YapPal.taskList.get(i)).append("\n");
-//        }
         AtomicInteger index = new AtomicInteger(1);
         YapPal.taskList.forEach(task -> {
             output.append(index.get()).append(". ").append(task).append("\n");
