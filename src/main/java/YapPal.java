@@ -44,12 +44,24 @@ public class YapPal {
             YapPal.list();
         } else if (command.length() > 4 && command.startsWith("mark")) {
             int taskIndex = Integer.parseInt(command.substring(5));
-            YapPal.mark(taskIndex);
+            try {
+                YapPal.mark(taskIndex);
+            } catch (YapPalException exception) {
+                YapPal.printMsg(exception.toString());
+            }
         } else if (command.length() > 6 && command.startsWith("unmark")) {
             int taskIndex = Integer.parseInt(command.substring(7));
-            YapPal.unmark(taskIndex);
+            try {
+                YapPal.unmark(taskIndex);
+            } catch (YapPalException exception) {
+                YapPal.printMsg(exception.toString());
+            }
         } else {
-            YapPal.addToList(command);
+            try {
+                YapPal.addToList(command);
+            } catch (YapPalException exception) {
+                YapPal.printMsg(exception.toString());
+            }
         }
         return YapPal.State.LISTENING;
     }
@@ -62,7 +74,7 @@ public class YapPal {
         YapPal.printMsg(output.toString());
     }
 
-    private static void addToList(String command) {
+    private static void addToList(String command) throws YapPalException{
         Task toAdd = determineTask(command);
         if (toAdd == null) {
             return;
@@ -72,7 +84,7 @@ public class YapPal {
         YapPal.printMsg("OK, I've added the following task: " + toAdd);
     }
 
-    private static Task determineTask(String command) {
+    private static Task determineTask (String command) throws YapPalException{
         if (command.length() > 4 && command.startsWith("todo")) {
             return createToDo(command);
         } else if (command.length() > 8 && command.startsWith("deadline")) {
@@ -81,7 +93,7 @@ public class YapPal {
             return createEvent(command);
         }
         // if none of the above:
-        return null;
+        throw new YapPalException("Invalid task, please try again!");
     }
 
     private static ToDo createToDo(String command) {
@@ -91,30 +103,70 @@ public class YapPal {
         return new ToDo(taskName);
     }
 
-    private static Deadline createDeadline(String command) {
+    private static Deadline createDeadline(String command) throws YapPalException{
         int DEADLINE_NAME_OFFSET = 9;
         int DEADLINE_DEADLINE_OFFSET = 4;
 
         int deadlineIndex = command.indexOf("/by");
+        if (deadlineIndex == -1) {
+            throw new YapPalException("No /by variable specified, please try again!");
+        }
+        if (deadlineIndex <= DEADLINE_NAME_OFFSET) {
+            throw new YapPalException("No task name specified, please try again!");
+        }
+        if (deadlineIndex + DEADLINE_DEADLINE_OFFSET >= command.length()) {
+            throw new YapPalException("No deadline specified, please try again!");
+        }
         String taskName = command.substring(DEADLINE_NAME_OFFSET, deadlineIndex - 1);
         String taskDeadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
         return new Deadline(taskName, taskDeadline);
     }
 
-    private static Event createEvent(String command) {
+    private static Event createEvent(String command) throws YapPalException{
         int EVENT_NAME_OFFSET = 6;
         int EVENT_START_OFFSET = 6;
         int EVENT_END_OFFSET = 4;
 
         int startIndex = command.indexOf("/from");
+        if (startIndex == -1) {
+            throw new YapPalException("No /from flag specified, please try again!");
+        }
         int endIndex = command.indexOf("/to");
-        String taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
-        String taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
-        String taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
+        if (endIndex == -1) {
+            throw new YapPalException("No /to flag specified, please try again!");
+        }
+        if (startIndex <= EVENT_NAME_OFFSET || endIndex <= EVENT_NAME_OFFSET) {
+            throw new YapPalException("No task name specified, please try again!");
+        }
+        String taskName, taskStart, taskEnd;
+        if (startIndex < endIndex) {
+            if (endIndex <= startIndex + EVENT_START_OFFSET) {
+                throw new YapPalException("No /from field specified, please try again!");
+            }
+            if (endIndex + EVENT_END_OFFSET >= command.length()) {
+                throw new YapPalException("No /to specified, please try again!");
+            }
+            taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
+            taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
+            taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
+        } else {
+            if (startIndex <= endIndex + EVENT_END_OFFSET) {
+                throw new YapPalException("No /to field specified, please try again!");
+            }
+            if (startIndex + EVENT_START_OFFSET >= command.length()) {
+                throw new YapPalException("No /from specified, please try again!");
+            }
+            taskName = command.substring(EVENT_NAME_OFFSET, endIndex - 1);
+            taskEnd = command.substring(endIndex + EVENT_END_OFFSET, startIndex - 1);
+            taskStart = command.substring(startIndex + EVENT_START_OFFSET);
+        }
         return new Event(taskName, taskStart, taskEnd);
     }
 
-    private static void mark(int ptr) {
+    private static void mark(int ptr) throws YapPalException {
+        if (ptr > YapPal.taskListPtr) {
+            throw new YapPalException("Task not in list, please try again!");
+        }
         YapPal.taskList[ptr - 1].mark();
         YapPal.printMsg(
             "Nice! I've marked this task as done: \n" +
@@ -122,7 +174,10 @@ public class YapPal {
         );
     }
 
-    private static void unmark(int ptr) {
+    private static void unmark(int ptr) throws YapPalException {
+        if (ptr > YapPal.taskListPtr) {
+            throw new YapPalException("Task not in list, please try again!");
+        }
         YapPal.taskList[ptr - 1].unmark();
         YapPal.printMsg(
             "OK, I've marked this task as not done yet: \n" +
