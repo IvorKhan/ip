@@ -73,31 +73,45 @@ public class YapPal {
     }
 
     private static Task determineTask(String command) {
+        if (command.length() > 4 && command.startsWith("todo")) {
+            return createToDo(command);
+        } else if (command.length() > 8 && command.startsWith("deadline")) {
+            return createDeadline(command);
+        } else if (command.length() > 5 && command.startsWith("event")) {
+            return createEvent(command);
+        }
+        // if none of the above:
+        return null;
+    }
+
+    private static ToDo createToDo(String command) {
         int TODO_NAME_OFFSET = 5;
+
+        String taskName = command.substring(TODO_NAME_OFFSET);
+        return new ToDo(taskName);
+    }
+
+    private static Deadline createDeadline(String command) {
         int DEADLINE_NAME_OFFSET = 9;
         int DEADLINE_DEADLINE_OFFSET = 4;
+
+        int deadlineIndex = command.indexOf("/by");
+        String taskName = command.substring(DEADLINE_NAME_OFFSET, deadlineIndex - 1);
+        String taskDeadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
+        return new Deadline(taskName, taskDeadline);
+    }
+
+    private static Event createEvent(String command) {
         int EVENT_NAME_OFFSET = 6;
         int EVENT_START_OFFSET = 6;
         int EVENT_END_OFFSET = 4;
 
-        if (command.length() > 4 && command.startsWith("todo")) {
-            String taskName = command.substring(TODO_NAME_OFFSET);
-            return new ToDo(taskName);
-        } else if (command.length() > 8 && command.startsWith("deadline")) {
-            int deadlineIndex = command.indexOf("/by");
-            String taskName = command.substring(DEADLINE_NAME_OFFSET, deadlineIndex - 1);
-            String taskDeadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
-            return new Deadline(taskName, taskDeadline);
-        } else if (command.length() > 5 && command.startsWith("event")) {
-            int startIndex = command.indexOf("/from");
-            int endIndex = command.indexOf("/to");
-            String taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
-            String taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
-            String taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
-            return new Event(taskName, taskStart, taskEnd);
-        }
-        // if none of the above:
-        return null;
+        int startIndex = command.indexOf("/from");
+        int endIndex = command.indexOf("/to");
+        String taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
+        String taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
+        String taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
+        return new Event(taskName, taskStart, taskEnd);
     }
 
     private static void mark(int ptr) {
