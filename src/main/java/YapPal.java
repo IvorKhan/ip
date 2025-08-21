@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class YapPal {
     // chatbot constants
@@ -18,8 +20,7 @@ public class YapPal {
 
     // operation constants
     private static final int MAX_LIST_LEN = 100;
-    private static Task[] taskList = new Task[MAX_LIST_LEN];
-    private static int taskListPtr = 0;
+    private static ArrayList<Task> taskList = new ArrayList<Task>(MAX_LIST_LEN);
 
     public static void main(String[] args) {
         // initialisation
@@ -68,9 +69,14 @@ public class YapPal {
 
     private static void list() {
         StringBuilder output = new StringBuilder();
-        for (int i = 0; i < YapPal.taskListPtr; ++i) {
-            output.append((i + 1)).append(". ").append(YapPal.taskList[i]).append("\n");
-        }
+//        for (int i = 0; i < YapPal.taskListPtr; ++i) {
+//            output.append((i + 1)).append(". ").append(YapPal.taskList.get(i)).append("\n");
+//        }
+        AtomicInteger index = new AtomicInteger(1);
+        YapPal.taskList.forEach(task -> {
+            output.append(index.get()).append(". ").append(task).append("\n");
+            index.incrementAndGet();
+        });
         YapPal.printMsg(output.toString());
     }
 
@@ -79,8 +85,7 @@ public class YapPal {
         if (toAdd == null) {
             return;
         }
-        YapPal.taskList[YapPal.taskListPtr] = toAdd;
-        ++YapPal.taskListPtr;
+        YapPal.taskList.add(toAdd);
         YapPal.printMsg("OK, I've added the following task: " + toAdd);
     }
 
@@ -164,24 +169,26 @@ public class YapPal {
     }
 
     private static void mark(int ptr) throws YapPalException {
-        if (ptr > YapPal.taskListPtr) {
+        if (ptr > YapPal.taskList.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        YapPal.taskList[ptr - 1].mark();
+        Task targetedTask = YapPal.taskList.get(ptr - 1);
+        targetedTask.mark();
         YapPal.printMsg(
             "Nice! I've marked this task as done: \n" +
-            taskList[ptr - 1]
+            targetedTask
         );
     }
 
     private static void unmark(int ptr) throws YapPalException {
-        if (ptr > YapPal.taskListPtr) {
+        if (ptr > YapPal.taskList.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        YapPal.taskList[ptr - 1].unmark();
+        Task targetedTask = YapPal.taskList.get(ptr - 1);
+        targetedTask.unmark();
         YapPal.printMsg(
             "OK, I've marked this task as not done yet: \n" +
-            taskList[ptr - 1]
+            targetedTask
         );
     }
 
