@@ -57,6 +57,13 @@ public class YapPal {
             } catch (YapPalException exception) {
                 YapPal.printMsg(exception.toString());
             }
+        } else if (command.length() > 6 && command.startsWith("delete")) {
+            int taskIndex = Integer.parseInt(command.substring(7));
+            try {
+                YapPal.delete(taskIndex);
+            } catch (YapPalException exception) {
+                YapPal.printMsg(exception.toString());
+            }
         } else {
             try {
                 YapPal.addToList(command);
@@ -188,6 +195,18 @@ public class YapPal {
         targetedTask.unmark();
         YapPal.printMsg(
             "OK, I've marked this task as not done yet: \n" +
+            targetedTask
+        );
+    }
+
+    private static void delete(int ptr) throws YapPalException {
+        if (ptr > YapPal.taskList.size() || ptr < 1) {
+            throw new YapPalException("Task not in list, please try again!");
+        }
+        Task targetedTask = YapPal.taskList.get(ptr - 1);
+        YapPal.taskList.remove(ptr - 1);
+        YapPal.printMsg(
+            "OK, I've removed this task: \n" +
             targetedTask
         );
     }
