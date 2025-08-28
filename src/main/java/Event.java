@@ -9,6 +9,11 @@ public class Event extends Task{
     }
 
     @Override
+    public String saveString() {
+        return "type: E start: " + this.start + " end: " + this.end + ' ' + super.saveString();
+    }
+
+    @Override
     public String toString() {
         return "[E]" + super.toString() + "(from: " + this.start + " to: " + this.end + ")";
     }

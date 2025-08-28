@@ -19,6 +19,11 @@ public abstract class Task {
         return this.marked;
     }
 
+    public String saveString() {
+        char markChar = this.isMarked() ? 'M' : '-';
+        return "name: " + name + "marked: " + markChar;
+    }
+
     @Override
     public String toString() {
         if (this.isMarked()) {

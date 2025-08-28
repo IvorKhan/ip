@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class YapPal {
     // chatbot constants
@@ -20,7 +23,7 @@ public class YapPal {
 
     // operation constants
     private static final int MAX_LIST_LEN = 100;
-    private static ArrayList<Task> taskList = new ArrayList<Task>(MAX_LIST_LEN);
+    private static ArrayList<Task> tasks = new ArrayList<Task>(MAX_LIST_LEN);
 
     public static void main(String[] args) {
         // initialisation
@@ -77,7 +80,7 @@ public class YapPal {
     private static void list() {
         StringBuilder output = new StringBuilder();
         AtomicInteger index = new AtomicInteger(1);
-        YapPal.taskList.forEach(task -> {
+        YapPal.tasks.forEach(task -> {
             output.append(index.get()).append(". ").append(task).append("\n");
             index.incrementAndGet();
         });
@@ -89,7 +92,7 @@ public class YapPal {
         if (toAdd == null) {
             return;
         }
-        YapPal.taskList.add(toAdd);
+        YapPal.tasks.add(toAdd);
         YapPal.printMsg("OK, I've added the following task: " + toAdd);
     }
 
@@ -173,10 +176,10 @@ public class YapPal {
     }
 
     private static void mark(int ptr) throws YapPalException {
-        if (ptr > YapPal.taskList.size() || ptr < 1) {
+        if (ptr > YapPal.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        Task targetedTask = YapPal.taskList.get(ptr - 1);
+        Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.mark();
         YapPal.printMsg(
             "Nice! I've marked this task as done: \n" +
@@ -185,10 +188,10 @@ public class YapPal {
     }
 
     private static void unmark(int ptr) throws YapPalException {
-        if (ptr > YapPal.taskList.size() || ptr < 1) {
+        if (ptr > YapPal.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        Task targetedTask = YapPal.taskList.get(ptr - 1);
+        Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.unmark();
         YapPal.printMsg(
             "OK, I've marked this task as not done yet: \n" +
@@ -197,15 +200,27 @@ public class YapPal {
     }
 
     private static void delete(int ptr) throws YapPalException {
-        if (ptr > YapPal.taskList.size() || ptr < 1) {
+        if (ptr > YapPal.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        Task targetedTask = YapPal.taskList.get(ptr - 1);
-        YapPal.taskList.remove(ptr - 1);
+        Task targetedTask = YapPal.tasks.get(ptr - 1);
+        YapPal.tasks.remove(ptr - 1);
         YapPal.printMsg(
             "OK, I've removed this task: \n" +
             targetedTask
         );
+    }
+
+    private static void save() {
+        try {
+            FileWriter saveFileWriter = new FileWriter("..\\data\\save.txt");
+            for (int i = 0; i < tasks.size(); ++i) {
+                saveFileWriter.write(tasks.get(i).saveString());
+            }
+            saveFileWriter.close();
+        } catch (IOException error) {
+            System.out.println("File access error occurred");
+        }
     }
 
     private static void printMsg(String msg) {
