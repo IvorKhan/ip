@@ -1,0 +1,4 @@
+todo test todo  /mark
+todo test todo 2  /mark
+deadline test deadline  /mark /by: tomorrow
+event test event  /mark /from: now /to tomorrow
