@@ -1,11 +1,11 @@
 public class ToDo extends Task {
-    public ToDo(String name) {
-        super(name);
+    public ToDo(String command) throws YapPalException{
+        super(command, 5);
     }
 
     @Override
     public String saveString() {
-        return "type: T " + super.saveString();
+        return "todo " + super.saveString();
     }
 
     @Override

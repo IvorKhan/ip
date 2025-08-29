@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public class YapPal {
     // chatbot constants
+    public static final String SAVE_DIRECTORY = "data\\save.txt";
     public static final String BOT_NAME = "YapPal";
     public static final String INTRO_MSG =
         "Hello! I'm " + BOT_NAME + "\n" +
@@ -105,81 +106,14 @@ public class YapPal {
 
     private static Task determineTask (String command) throws YapPalException{
         if (command.length() > 4 && command.startsWith("todo")) {
-            return createToDo(command);
+            return new ToDo(command);
         } else if (command.length() > 8 && command.startsWith("deadline")) {
-            return createDeadline(command);
+            return new Deadline(command);
         } else if (command.length() > 5 && command.startsWith("event")) {
-            return createEvent(command);
+            return new Event(command);
         }
         // if none of the above:
         throw new YapPalException("Invalid task, please try again!");
-    }
-
-    private static ToDo createToDo(String command) {
-        int TODO_NAME_OFFSET = 5;
-
-        String taskName = command.substring(TODO_NAME_OFFSET);
-        return new ToDo(taskName);
-    }
-
-    private static Deadline createDeadline(String command) throws YapPalException{
-        int DEADLINE_NAME_OFFSET = 9;
-        int DEADLINE_DEADLINE_OFFSET = 4;
-
-        int deadlineIndex = command.indexOf("/by");
-        if (deadlineIndex == -1) {
-            throw new YapPalException("No /by variable specified, please try again!");
-        }
-        if (deadlineIndex <= DEADLINE_NAME_OFFSET) {
-            throw new YapPalException("No task name specified, please try again!");
-        }
-        if (deadlineIndex + DEADLINE_DEADLINE_OFFSET >= command.length()) {
-            throw new YapPalException("No deadline specified, please try again!");
-        }
-        String taskName = command.substring(DEADLINE_NAME_OFFSET, deadlineIndex - 1);
-        String taskDeadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
-        return new Deadline(taskName, taskDeadline);
-    }
-
-    private static Event createEvent(String command) throws YapPalException{
-        int EVENT_NAME_OFFSET = 6;
-        int EVENT_START_OFFSET = 6;
-        int EVENT_END_OFFSET = 4;
-
-        int startIndex = command.indexOf("/from");
-        if (startIndex == -1) {
-            throw new YapPalException("No /from flag specified, please try again!");
-        }
-        int endIndex = command.indexOf("/to");
-        if (endIndex == -1) {
-            throw new YapPalException("No /to flag specified, please try again!");
-        }
-        if (startIndex <= EVENT_NAME_OFFSET || endIndex <= EVENT_NAME_OFFSET) {
-            throw new YapPalException("No task name specified, please try again!");
-        }
-        String taskName, taskStart, taskEnd;
-        if (startIndex < endIndex) {
-            if (endIndex <= startIndex + EVENT_START_OFFSET) {
-                throw new YapPalException("No /from field specified, please try again!");
-            }
-            if (endIndex + EVENT_END_OFFSET >= command.length()) {
-                throw new YapPalException("No /to specified, please try again!");
-            }
-            taskName = command.substring(EVENT_NAME_OFFSET, startIndex - 1);
-            taskStart = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
-            taskEnd = command.substring(endIndex + EVENT_END_OFFSET);
-        } else {
-            if (startIndex <= endIndex + EVENT_END_OFFSET) {
-                throw new YapPalException("No /to field specified, please try again!");
-            }
-            if (startIndex + EVENT_START_OFFSET >= command.length()) {
-                throw new YapPalException("No /from specified, please try again!");
-            }
-            taskName = command.substring(EVENT_NAME_OFFSET, endIndex - 1);
-            taskEnd = command.substring(endIndex + EVENT_END_OFFSET, startIndex - 1);
-            taskStart = command.substring(startIndex + EVENT_START_OFFSET);
-        }
-        return new Event(taskName, taskStart, taskEnd);
     }
 
     private static void mark(int ptr) throws YapPalException {
@@ -188,6 +122,7 @@ public class YapPal {
         }
         Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.mark();
+        YapPal.save();
         YapPal.printMsg(
             "Nice! I've marked this task as done: \n" +
             targetedTask
@@ -200,6 +135,7 @@ public class YapPal {
         }
         Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.unmark();
+        YapPal.save();
         YapPal.printMsg(
             "OK, I've marked this task as not done yet: \n" +
             targetedTask
@@ -220,9 +156,9 @@ public class YapPal {
 
     private static void save() {
         try {
-            FileWriter saveFileWriter = new FileWriter("..\\data\\save.txt");
+            FileWriter saveFileWriter = new FileWriter(YapPal.SAVE_DIRECTORY);
             for (int i = 0; i < tasks.size(); ++i) {
-                saveFileWriter.write(tasks.get(i).saveString());
+                saveFileWriter.write(tasks.get(i).saveString() + "\n");
             }
             saveFileWriter.close();
         } catch (IOException error) {
@@ -231,7 +167,7 @@ public class YapPal {
     }
 
     private static ArrayList<Task> load() throws YapPalException {
-        File saveFile = new File("data\\save.txt");
+        File saveFile = new File(YapPal.SAVE_DIRECTORY);
         ArrayList<Task> tasks = new ArrayList<>(YapPal.MAX_LIST_LEN);
         try {
             Scanner saveReader = new Scanner(saveFile);
