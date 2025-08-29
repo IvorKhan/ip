@@ -10,7 +10,7 @@ public class Event extends Task{
 
     @Override
     public String saveString() {
-        return "type: E start: " + this.start + " end: " + this.end + ' ' + super.saveString();
+        return "event " + super.saveString() + " /start: " + this.start + " /end " + this.end;
     }
 
     @Override
