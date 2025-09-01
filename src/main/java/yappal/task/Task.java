@@ -1,8 +1,12 @@
+package yappal.task;
+
+import yappal.YapPalException;
+
 public abstract class Task {
     private String name;
     private boolean marked;
 
-    public Task(String command, int offset) throws YapPalException{
+    public Task(String command, int offset) throws YapPalException {
         int nameEndIndex = command.indexOf('/');
         if (nameEndIndex == -1) {
             this.name = command.substring(offset);

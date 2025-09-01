@@ -1,5 +1,9 @@
+package yappal.task;
+
+import yappal.YapPalException;
+
 public class ToDo extends Task {
-    public ToDo(String command) throws YapPalException{
+    public ToDo(String command) throws YapPalException {
         super(command, 5);
     }
 

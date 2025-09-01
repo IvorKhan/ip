@@ -1,6 +1,9 @@
+package yappal.task;
+
+import yappal.YapPalException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 
 public class Event extends Task{
@@ -8,7 +11,7 @@ public class Event extends Task{
     private LocalDate end;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    public Event(String command) throws YapPalException{
+    public Event(String command) throws YapPalException {
         super(command, 6);
         int EVENT_START_OFFSET = 6;
         int EVENT_END_OFFSET = 4;

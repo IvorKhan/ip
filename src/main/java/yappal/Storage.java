@@ -1,3 +1,6 @@
+package yappal;
+
+import yappal.task.Task;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -5,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Storage {
+class Storage {
     private final String SAVE_DIRECTORY;
     private Ui ui;
     private Parser parser;

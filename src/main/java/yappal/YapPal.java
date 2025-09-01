@@ -1,6 +1,9 @@
+package yappal;
+
+import yappal.task.Task;
 import java.util.ArrayList;
 
-public class YapPal {
+class YapPal {
     // operation objects
     private TaskList taskList;
     private Parser parser;

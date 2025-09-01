@@ -1,6 +1,13 @@
+package yappal;
+
+import yappal.task.Deadline;
+import yappal.task.Event;
+import yappal.task.Task;
+import yappal.task.ToDo;
+
 import java.util.Scanner;
 
-public class Parser {
+class Parser {
     private Scanner scanner;
     private String lastCommand;
 

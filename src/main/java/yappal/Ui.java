@@ -1,4 +1,6 @@
-public class Ui {
+package yappal;
+
+class Ui {
     // chatbot constants
     public final String BOT_NAME;
     public final String INTRO_MSG;

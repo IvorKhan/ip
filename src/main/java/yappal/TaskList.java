@@ -1,7 +1,10 @@
+package yappal;
+
+import yappal.task.Task;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class TaskList {
+class TaskList {
     // operation constants
     public static final int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
