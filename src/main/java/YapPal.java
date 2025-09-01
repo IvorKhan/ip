@@ -7,14 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class YapPal {
-    // chatbot constants
     public static final String SAVE_DIRECTORY = "data\\save.txt";
-    public static final String BOT_NAME = "YapPal";
-    public static final String INTRO_MSG =
-        "Hello! I'm " + BOT_NAME + "\n" +
-        "What can I do for you?";
-    public static final String GOODBYE_MSG =
-        "Hope to see you again soon!";
     public static Scanner scanner = new Scanner(System.in);
 
     // state constants
@@ -29,7 +22,7 @@ public class YapPal {
 
     public static void main(String[] args) {
         // initialisation
-        YapPal.printMsg(YapPal.INTRO_MSG);
+        Ui.printIntro();
         State state = YapPal.State.LISTENING;
         try {
             YapPal.tasks = YapPal.load();
@@ -43,7 +36,7 @@ public class YapPal {
         }
 
         // termination
-        YapPal.printMsg(YapPal.GOODBYE_MSG);
+        Ui.printGoodbye();
     }
 
     private static State listen() {
@@ -58,27 +51,27 @@ public class YapPal {
             try {
                 YapPal.mark(taskIndex);
             } catch (YapPalException exception) {
-                YapPal.printMsg(exception.toString());
+                Ui.printMsg(exception.toString());
             }
         } else if (command.length() > 6 && command.startsWith("unmark")) {
             int taskIndex = Integer.parseInt(command.substring(7));
             try {
                 YapPal.unmark(taskIndex);
             } catch (YapPalException exception) {
-                YapPal.printMsg(exception.toString());
+                Ui.printMsg(exception.toString());
             }
         } else if (command.length() > 6 && command.startsWith("delete")) {
             int taskIndex = Integer.parseInt(command.substring(7));
             try {
                 YapPal.delete(taskIndex);
             } catch (YapPalException exception) {
-                YapPal.printMsg(exception.toString());
+                Ui.printMsg(exception.toString());
             }
         } else {
             try {
                 YapPal.addToList(command);
             } catch (YapPalException exception) {
-                YapPal.printMsg(exception.toString());
+                Ui.printMsg(exception.toString());
             }
         }
         return YapPal.State.LISTENING;
@@ -91,7 +84,7 @@ public class YapPal {
             output.append(index.get()).append(". ").append(task).append("\n");
             index.incrementAndGet();
         });
-        YapPal.printMsg(output.toString());
+        Ui.printMsg(output.toString());
     }
 
     private static void addToList(String command) throws YapPalException{
@@ -101,7 +94,7 @@ public class YapPal {
         }
         YapPal.tasks.add(toAdd);
         YapPal.save();
-        YapPal.printMsg("OK, I've added the following task: " + toAdd);
+        Ui.printMsg("OK, I've added the following task: " + toAdd);
     }
 
     private static Task determineTask (String command) throws YapPalException{
@@ -123,7 +116,7 @@ public class YapPal {
         Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.mark();
         YapPal.save();
-        YapPal.printMsg(
+        Ui.printMsg(
             "Nice! I've marked this task as done: \n" +
             targetedTask
         );
@@ -136,7 +129,7 @@ public class YapPal {
         Task targetedTask = YapPal.tasks.get(ptr - 1);
         targetedTask.unmark();
         YapPal.save();
-        YapPal.printMsg(
+        Ui.printMsg(
             "OK, I've marked this task as not done yet: \n" +
             targetedTask
         );
@@ -148,7 +141,7 @@ public class YapPal {
         }
         Task targetedTask = YapPal.tasks.get(ptr - 1);
         YapPal.tasks.remove(ptr - 1);
-        YapPal.printMsg(
+        Ui.printMsg(
             "OK, I've removed this task: \n" +
             targetedTask
         );
@@ -162,7 +155,7 @@ public class YapPal {
             }
             saveFileWriter.close();
         } catch (IOException error) {
-            YapPal.printMsg(error.toString());
+            Ui.printMsg(error.toString());
         }
     }
 
@@ -187,13 +180,5 @@ public class YapPal {
             }
         }
         return tasks;
-    }
-
-    private static void printMsg(String msg) {
-        System.out.println(
-            "____________________________________________________________ \n" +
-            msg + " \n" +
-            "____________________________________________________________ \n"
-        );
     }
 }
