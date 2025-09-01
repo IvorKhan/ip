@@ -1,6 +1,14 @@
+import java.util.Scanner;
+
 public class Parser {
+    private Scanner scanner;
+
+    public Parser() {
+        this.scanner = new Scanner(System.in);
+    }
+
     private static YapPal.State listen() {
-        String command = YapPal.scanner.nextLine();
+        String command = this.scanner.nextLine();
         if (command.equals("bye")) {
             return YapPal.State.TERMINATE;
         }

@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    // operation constants
-    private static final int MAX_LIST_LEN = 100;
-    private static ArrayList<Task> tasks = new ArrayList<Task>(Storage.MAX_LIST_LEN);
+    public static final String SAVE_DIRECTORY = "data\\save.txt";
 
     private static void save() {
         try {
