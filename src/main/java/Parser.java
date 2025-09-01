@@ -2,50 +2,42 @@ import java.util.Scanner;
 
 public class Parser {
     private Scanner scanner;
+    private String lastCommand;
 
     public Parser() {
         this.scanner = new Scanner(System.in);
+        this.lastCommand = "";
     }
 
-    private static YapPal.State listen() {
-        String command = this.scanner.nextLine();
-        if (command.equals("bye")) {
+    public YapPal.State listen() {
+        this.lastCommand = this.scanner.nextLine();
+        if (this.lastCommand.equals("bye")) {
             return YapPal.State.TERMINATE;
         }
-        if (command.equals("list")) {
-            YapPal.list();
-        } else if (command.length() > 4 && command.startsWith("mark")) {
-            int taskIndex = Integer.parseInt(command.substring(5));
-            try {
-                YapPal.mark(taskIndex);
-            } catch (YapPalException exception) {
-                Ui.printMsg(exception.toString());
-            }
-        } else if (command.length() > 6 && command.startsWith("unmark")) {
-            int taskIndex = Integer.parseInt(command.substring(7));
-            try {
-                YapPal.unmark(taskIndex);
-            } catch (YapPalException exception) {
-                Ui.printMsg(exception.toString());
-            }
-        } else if (command.length() > 6 && command.startsWith("delete")) {
-            int taskIndex = Integer.parseInt(command.substring(7));
-            try {
-                YapPal.delete(taskIndex);
-            } catch (YapPalException exception) {
-                Ui.printMsg(exception.toString());
-            }
-        } else {
-            try {
-                YapPal.addToList(command);
-            } catch (YapPalException exception) {
-                Ui.printMsg(exception.toString());
-            }
+        if (this.lastCommand.equals("list")) {
+            return YapPal.State.LIST;
+        } else if (this.lastCommand.length() > 4 && this.lastCommand.startsWith("mark")) {
+            return YapPal.State.MARK;
+        } else if (this.lastCommand.length() > 6 && this.lastCommand.startsWith("unmark")) {
+            return YapPal.State.UNMARK;
+        } else if (this.lastCommand.length() > 6 && this.lastCommand.startsWith("delete")) {
+            return YapPal.State.DELETE;
         }
-        return YapPal.State.LISTENING;
+        return YapPal.State.ADD;
     }
 
-    private static Task determineTask (String command) throws YapPalException{
+    public String getLastCommand() {
+        return lastCommand;
+    }
+
+    public int getLastInd(YapPal.State state) {
+        if (state == YapPal.State.MARK) {
+            return Integer.parseInt(this.lastCommand.substring(5));
+        }
+        return Integer.parseInt(this.lastCommand.substring(7));
+    }
+
+    public Task determineTask (String command) throws YapPalException{
         if (command.length() > 4 && command.startsWith("todo")) {
             return new ToDo(command);
         } else if (command.length() > 8 && command.startsWith("deadline")) {

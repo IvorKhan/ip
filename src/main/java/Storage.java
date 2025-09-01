@@ -6,28 +6,36 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    public static final String SAVE_DIRECTORY = "data\\save.txt";
+    private final String SAVE_DIRECTORY;
+    private Ui ui;
+    private Parser parser;
 
-    private static void save() {
+    public Storage(String savePath, Ui ui, Parser parser) {
+        this.SAVE_DIRECTORY = savePath;
+        this.ui = ui;
+        this.parser = parser;
+    }
+
+    public void save(ArrayList<Task> tasks) {
         try {
-            FileWriter saveFileWriter = new FileWriter(YapPal.SAVE_DIRECTORY);
+            FileWriter saveFileWriter = new FileWriter(this.SAVE_DIRECTORY);
             for (int i = 0; i < tasks.size(); ++i) {
                 saveFileWriter.write(tasks.get(i).saveString() + "\n");
             }
             saveFileWriter.close();
         } catch (IOException error) {
-            Ui.printMsg(error.toString());
+            this.ui.printMsg(error.toString());
         }
     }
 
-    private static ArrayList<Task> load() throws YapPalException {
-        File saveFile = new File(YapPal.SAVE_DIRECTORY);
-        ArrayList<Task> tasks = new ArrayList<>(Storage.MAX_LIST_LEN);
+    public ArrayList<Task> load() throws YapPalException {
+        File saveFile = new File(this.SAVE_DIRECTORY);
+        ArrayList<Task> tasks = new ArrayList<>(TaskList.MAX_LIST_LEN);
         try {
             Scanner saveReader = new Scanner(saveFile);
             while (saveReader.hasNextLine()) {
                 String command = saveReader.nextLine();
-                Task task = determineTask(command);
+                Task task = parser.determineTask(command);
                 tasks.add(task);
             }
             saveReader.close();

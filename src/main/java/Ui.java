@@ -1,21 +1,26 @@
 public class Ui {
     // chatbot constants
-    public static final String BOT_NAME = "YapPal";
-    public static final String INTRO_MSG =
-            "Hello! I'm " + BOT_NAME + "\n" +
-                    "What can I do for you?";
+    public final String BOT_NAME;
+    public final String INTRO_MSG;
     public static final String GOODBYE_MSG =
-            "Hope to see you again soon!";
+        "Hope to see you again soon!";
 
-    public static void printIntro() {
-        Ui.printMsg(Ui.INTRO_MSG);
+    public Ui(String name) {
+        this.BOT_NAME = name;
+        this.INTRO_MSG =
+            "Hello! I'm " + BOT_NAME + "\n" +
+            "What can I do for you?";
     }
 
-    public static void printGoodbye() {
-        Ui.printMsg(Ui.GOODBYE_MSG);
+    public void printIntro() {
+        this.printMsg(this.INTRO_MSG);
     }
 
-    public static void printMsg(String msg) {
+    public void printGoodbye() {
+        this.printMsg(this.GOODBYE_MSG);
+    }
+
+    public void printMsg(String msg) {
         System.out.println(
             "____________________________________________________________ \n" +
             msg + " \n" +

@@ -1,35 +1,88 @@
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class YapPal {
+    // operation objects
+    private TaskList taskList;
+    private Parser parser;
+    private Storage storage;
+    private Ui ui;
 
     // state constants
     public enum State {
-        LISTENING,
         TERMINATE,
+        INIT,
+        LIST,
+        MARK,
+        UNMARK,
+        DELETE,
+        ADD,
+    }
+
+    public YapPal() {
+        this.parser = new Parser();
+        this.ui = new Ui("YapPal");
+        this.storage = new Storage("data\\save.txt", ui, parser);
+        ArrayList<Task> tasks;
+        try {
+            tasks = this.storage.load();
+        } catch (YapPalException exception) {
+            tasks = new ArrayList<>();
+        }
+        this.taskList = new TaskList(tasks, this.ui);
+    }
+
+    public void run() {
+        // startup
+        this.ui.printIntro();
+        State state = YapPal.State.INIT;
+        try {
+            this.storage.load();
+        } catch (YapPalException exception) {
+            this.ui.printMsg(exception.toString());
+        }
+
+        // listening loop
+        String command;
+        Task task;
+        int index;
+        while (state != YapPal.State.TERMINATE) {
+            state = this.parser.listen();
+            command = this.parser.getLastCommand();
+            try {
+                switch (state) {
+                    case LIST:
+                        this.taskList.list();
+                        break;
+                    case MARK:
+                        index = this.parser.getLastInd(state);
+                        this.taskList.mark(index);
+                        break;
+                    case UNMARK:
+                        index = this.parser.getLastInd(state);
+                        this.taskList.unmark(index);
+                        break;
+                    case DELETE:
+                        index = this.parser.getLastInd(state);
+                        this.taskList.delete(index);
+                        break;
+                    case ADD:
+                        task = this.parser.determineTask(command);
+                        this.taskList.addToList(task);
+                }
+                if (state != YapPal.State.LIST) {
+                    this.storage.save(this.taskList.getTaskList());
+                }
+            } catch (YapPalException exception) {
+                this.ui.printMsg(exception.toString());
+            }
+        }
+
+        // termination
+        this.ui.printGoodbye();
     }
 
     public static void main(String[] args) {
         // initialisation
-        Ui.printIntro();
-        State state = YapPal.State.LISTENING;
-        try {
-            YapPal.tasks = YapPal.load();
-        } catch (YapPalException exception) {
-            System.out.printf(exception.toString());
-        }
-
-        // listening loop
-        while (state != YapPal.State.TERMINATE) {
-            state = YapPal.listen();
-        }
-
-        // termination
-        Ui.printGoodbye();
+        new YapPal().run();
     }
 }

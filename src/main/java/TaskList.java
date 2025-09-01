@@ -3,43 +3,42 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskList {
     // operation constants
-    private static final int MAX_LIST_LEN = 100;
+    public static final int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
+    private Ui ui;
 
-    public TaskList() {
-        this.tasks = new ArrayList<>(TaskList.MAX_LIST_LEN);
+    public TaskList(ArrayList<Task> tasks, Ui ui) {
+        this.tasks = tasks;
+        this.ui = ui;
     }
 
-    private void list() {
+    public void list() {
         StringBuilder output = new StringBuilder();
         AtomicInteger index = new AtomicInteger(1);
         this.tasks.forEach(task -> {
             output.append(index.get()).append(". ").append(task).append("\n");
             index.incrementAndGet();
         });
-        Ui.printMsg(output.toString());
+        this.ui.printMsg(output.toString());
     }
 
-    private void addToList(String command) throws YapPalException{
-        Task toAdd = determineTask(command);
+    public void addToList(Task toAdd) throws YapPalException{
         if (toAdd == null) {
             return;
         }
         this.tasks.add(toAdd);
-        YapPal.save();
-        Ui.printMsg("OK, I've added the following task: " + toAdd);
+        this.ui.printMsg("OK, I've added the following task: " + toAdd);
     }
 
     public void mark(int ptr) throws YapPalException {
-        if (ptr > YapPal.tasks.size() || ptr < 1) {
+        if (ptr > this.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        Task targetedTask = YapPal.tasks.get(ptr - 1);
+        Task targetedTask = this.tasks.get(ptr - 1);
         targetedTask.mark();
-        YapPal.save();
-        Ui.printMsg(
-                "Nice! I've marked this task as done: \n" +
-                        targetedTask
+        this.ui.printMsg(
+            "Nice! I've marked this task as done: \n" +
+            targetedTask
         );
     }
 
@@ -49,23 +48,25 @@ public class TaskList {
         }
         Task targetedTask = this.tasks.get(ptr - 1);
         targetedTask.unmark();
-        YapPal.save();
-        Ui.printMsg(
-                "OK, I've marked this task as not done yet: \n" +
-                        targetedTask
+        this.ui.printMsg(
+            "OK, I've marked this task as not done yet: \n" +
+            targetedTask
         );
     }
 
-    public static void delete(int ptr) throws YapPalException {
-        if (ptr > YapPal.tasks.size() || ptr < 1) {
+    public void delete(int ptr) throws YapPalException {
+        if (ptr > this.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
         }
-        Task targetedTask = YapPal.tasks.get(ptr - 1);
-        YapPal.tasks.remove(ptr - 1);
-        YapPal.save();
-        Ui.printMsg(
-                "OK, I've removed this task: \n" +
-                        targetedTask
+        Task targetedTask = this.tasks.get(ptr - 1);
+        this.tasks.remove(ptr - 1);
+        this.ui.printMsg(
+            "OK, I've removed this task: \n" +
+            targetedTask
         );
+    }
+
+    public ArrayList<Task> getTaskList() {
+        return this.tasks;
     }
 }
