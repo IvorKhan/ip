@@ -1,4 +1,2 @@
-todo test todo  /mark
-todo test todo 2  /mark
-deadline test deadline  /mark /by: tomorrow
-event test event  /mark /from: now /to tomorrow
+deadline deadline  /mark /by 2011-12-21
+event event   /from 2011-12-31 /to 2012-12-21

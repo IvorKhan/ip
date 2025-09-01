@@ -1,5 +1,10 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Deadline extends Task {
-    private String deadline;
+    private LocalDate deadline;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
     public Deadline(String command) throws YapPalException {
         super(command, 9);
@@ -12,16 +17,20 @@ public class Deadline extends Task {
         if (deadlineIndex + DEADLINE_DEADLINE_OFFSET >= command.length()) {
             throw new YapPalException("No deadline specified, please try again!");
         }
-        this.deadline = command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET);
+        try {
+            this.deadline = LocalDate.parse(command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET));
+        } catch (DateTimeParseException exception) {
+            throw new YapPalException("Please use yyyy-mm-dd format to input the date!");
+        }
     }
 
     @Override
     public String saveString() {
-        return "deadline " + super.saveString() + " /by: " + this.deadline;
+        return "deadline " + super.saveString() + " /by " + this.deadline;
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by " + this.deadline + ")";
+        return "[D]" + super.toString() + " (by " + this.deadline.format(Deadline.FORMATTER) + ")";
     }
 }
