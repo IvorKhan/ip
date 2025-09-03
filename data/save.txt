@@ -1,6 +1,5 @@
-todo todo    /mark
-deadline deadline       /mark /by 1111-11-11
-event event       /mark /from 1111-11-11 /to 1111-11-11
-todo todo  /mark
+deadline deadline        /mark /by 1111-11-11
+event event        /mark /from 1111-11-11 /to 1111-11-11
+todo todo   /mark
 todo todo
-event attend 2103t  /mark /from 2025-09-03 /to 2025-09-03
+event attend 2103t   /mark /from 2025-09-03 /to 2025-09-03
