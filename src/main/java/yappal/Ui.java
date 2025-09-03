@@ -4,9 +4,9 @@ package yappal;
  * Creates an Ui object for managing outputs
  */
 class Ui {
-    public final String BOT_NAME;
-    public final String INTRO_MSG;
-    public static final String GOODBYE_MSG =
+    public final String botName;
+    public final String introMsg;
+    public final static String GOODBYE_MSG =
         "Hope to see you again soon!";
 
     /**
@@ -14,18 +14,18 @@ class Ui {
      * @param name Name of the bot
      */
     public Ui(String name) {
-        this.BOT_NAME = name;
-        this.INTRO_MSG =
-            "Hello! I'm " + BOT_NAME + "\n" +
-            "What can I do for you?";
+        this.botName = name;
+        this.introMsg =
+            "Hello! I'm " + botName + "\n"
+            + "What can I do for you?";
     }
 
     public void printIntro() {
-        this.printMsg(this.INTRO_MSG);
+        this.printMsg(this.introMsg);
     }
 
     public void printGoodbye() {
-        this.printMsg(this.GOODBYE_MSG);
+        this.printMsg(Ui.GOODBYE_MSG);
     }
 
     /**
@@ -35,9 +35,9 @@ class Ui {
      */
     public void printMsg(String msg) {
         System.out.println(
-            "____________________________________________________________ \n" +
-            msg + " \n" +
             "____________________________________________________________ \n"
+            + msg + " \n"
+            + "____________________________________________________________ \n"
         );
     }
 }

@@ -20,8 +20,7 @@ public abstract class Task {
         int nameEndIndex = command.indexOf('/');
         if (nameEndIndex == -1) {
             this.name = command.substring(offset);
-        }
-        else {
+        } else {
             if (nameEndIndex <= offset) {
                 throw new YapPalException("No task name specified, please try again!");
             }

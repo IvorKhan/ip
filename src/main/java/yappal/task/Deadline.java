@@ -1,16 +1,20 @@
 package yappal.task;
 
-import yappal.YapPalException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import yappal.YapPalException;
 
 /**
  * Deadline class that represents a Deadline
  */
 public class Deadline extends Task {
     private LocalDate deadline;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy"); // for formatting dates in output
+    // for formatting dates in output
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private final static int OFFSET_BY = 4;
+    private final static int OFFSET_NAME = 9;
 
     /**
      * Instantiates a Deadline object
@@ -19,18 +23,17 @@ public class Deadline extends Task {
      * @throws YapPalException If user's inputs do not follow the deadline instantiation format
      */
     public Deadline(String command) throws YapPalException {
-        super(command, 9);
-        int DEADLINE_DEADLINE_OFFSET = 4;
+        super(command, OFFSET_NAME);
 
         int deadlineIndex = command.indexOf("/by");
         if (deadlineIndex == -1) {
             throw new YapPalException("No /by variable specified, please try again!");
         }
-        if (deadlineIndex + DEADLINE_DEADLINE_OFFSET >= command.length()) {
+        if (deadlineIndex + OFFSET_BY >= command.length()) {
             throw new YapPalException("No deadline specified, please try again!");
         }
         try {
-            this.deadline = LocalDate.parse(command.substring(deadlineIndex + DEADLINE_DEADLINE_OFFSET));
+            this.deadline = LocalDate.parse(command.substring(deadlineIndex + OFFSET_BY));
         } catch (DateTimeParseException exception) {
             throw new YapPalException("Please use yyyy-mm-dd format to input the date!");
         }

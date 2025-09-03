@@ -1,20 +1,29 @@
 package yappal.task;
 
-import yappal.YapPalException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Event extends Task{
+import yappal.YapPalException;
+
+/**
+ * Event class representing an Event
+ */
+public class Event extends Task {
     private LocalDate start;
     private LocalDate end;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private final static int OFFSET_FROM = 6;
+    private final static int OFFSET_TO = 4;
 
+    /**
+     * Instantiates an Event object
+     *
+     * @param command User Input for creating the Event object
+     * @throws YapPalException If user input is missing information
+     */
     public Event(String command) throws YapPalException {
         super(command, 6);
-        int EVENT_START_OFFSET = 6;
-        int EVENT_END_OFFSET = 4;
 
         int startIndex = command.indexOf("/from");
         if (startIndex == -1) {
@@ -28,23 +37,23 @@ public class Event extends Task{
         String startString;
         String endString;
         if (startIndex < endIndex) {
-            if (endIndex <= startIndex + EVENT_START_OFFSET) {
+            if (endIndex <= startIndex + OFFSET_FROM) {
                 throw new YapPalException("No /from field specified, please try again!");
             }
-            if (endIndex + EVENT_END_OFFSET >= command.length()) {
+            if (endIndex + OFFSET_TO >= command.length()) {
                 throw new YapPalException("No /to specified, please try again!");
             }
-            startString = command.substring(startIndex + EVENT_START_OFFSET, endIndex - 1);
-            endString = command.substring(endIndex + EVENT_END_OFFSET);
+            startString = command.substring(startIndex + OFFSET_FROM, endIndex - 1);
+            endString = command.substring(endIndex + OFFSET_TO);
         } else {
-            if (startIndex <= endIndex + EVENT_END_OFFSET) {
+            if (startIndex <= endIndex + OFFSET_TO) {
                 throw new YapPalException("No /to field specified, please try again!");
             }
-            if (startIndex + EVENT_START_OFFSET >= command.length()) {
+            if (startIndex + OFFSET_FROM >= command.length()) {
                 throw new YapPalException("No /from specified, please try again!");
             }
-            endString = command.substring(endIndex + EVENT_END_OFFSET, startIndex - 1);
-            startString = command.substring(startIndex + EVENT_START_OFFSET);
+            endString = command.substring(endIndex + OFFSET_TO, startIndex - 1);
+            startString = command.substring(startIndex + OFFSET_FROM);
         }
         try {
             this.start = LocalDate.parse(startString);
@@ -64,6 +73,7 @@ public class Event extends Task{
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + "(from: " + this.start.format(Event.FORMATTER) + " to: " + this.end.format(Event.FORMATTER) + ")";
+        return "[E]" + super.toString() + "(from: " + this.start.format(Event.FORMATTER)
+               + " to: " + this.end.format(Event.FORMATTER) + ")";
     }
 }

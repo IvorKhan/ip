@@ -1,7 +1,8 @@
 package yappal;
 
-import yappal.task.Task;
 import java.util.ArrayList;
+
+import yappal.task.Task;
 
 /**
  * YapPal Class
@@ -90,6 +91,9 @@ class YapPal {
                     case ADD:
                         task = this.parser.determineTask(command);
                         this.taskList.addToList(task);
+                        break;
+                    default:
+                        throw new YapPalException("Unknown command, please try again");
                 }
                 // save after every action
                 if (state != YapPal.State.LIST) {

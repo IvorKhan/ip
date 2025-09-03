@@ -1,11 +1,11 @@
 package yappal;
 
+import java.util.Scanner;
+
 import yappal.task.Deadline;
 import yappal.task.Event;
 import yappal.task.Task;
 import yappal.task.ToDo;
-
-import java.util.Scanner;
 
 /**
  * Parser object that parses user input into arguments
@@ -68,7 +68,7 @@ class Parser {
      * @return The task created from the task creation command
      * @throws YapPalException If the command does not create a task
      */
-    public Task determineTask (String command) throws YapPalException{
+    public Task determineTask(String command) throws YapPalException {
         if (command.length() > 4 && command.startsWith("todo")) {
             return new ToDo(command);
         } else if (command.length() > 8 && command.startsWith("deadline")) {
