@@ -41,6 +41,10 @@ public abstract class Task {
         return this.marked;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     /**
      * Generates the command for creating the task
      *
