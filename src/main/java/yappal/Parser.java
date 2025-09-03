@@ -36,6 +36,8 @@ class Parser {
             return YapPal.State.LIST;
         } else if (this.lastCommand.length() > 4 && this.lastCommand.startsWith("mark")) {
             return YapPal.State.MARK;
+        } else if (this.lastCommand.length() > 4 && this.lastCommand.startsWith("find")) {
+            return YapPal.State.FIND;
         } else if (this.lastCommand.length() > 6 && this.lastCommand.startsWith("unmark")) {
             return YapPal.State.UNMARK;
         } else if (this.lastCommand.length() > 6 && this.lastCommand.startsWith("delete")) {

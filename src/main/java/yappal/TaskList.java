@@ -67,6 +67,20 @@ class TaskList {
         );
     }
 
+    public void find(String command) throws YapPalException {
+        final int offset = 5;
+        String keyword = command.substring(offset);
+        StringBuilder output = new StringBuilder();
+        AtomicInteger index = new AtomicInteger(1);
+        this.tasks.forEach(task -> {
+            if (task.getName().contains(keyword)) {
+                output.append(index.get()).append(". ").append(task).append("\n");
+                index.incrementAndGet();
+            }
+        });
+        this.ui.printMsg(output.toString());
+    }
+
     /**
      * Unmarks a task in the task list
      *

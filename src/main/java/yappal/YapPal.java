@@ -22,6 +22,7 @@ class YapPal {
         UNMARK,
         DELETE,
         ADD,
+        FIND,
     }
 
     /**
@@ -82,6 +83,9 @@ class YapPal {
                     case UNMARK:
                         index = this.parser.getLastInd(state);
                         this.taskList.unmark(index);
+                        break;
+                    case FIND:
+                        this.taskList.find(command);
                         break;
                     case DELETE:
                         index = this.parser.getLastInd(state);
