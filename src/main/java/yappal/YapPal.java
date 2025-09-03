@@ -72,24 +72,24 @@ class YapPal {
             command = this.parser.getLastCommand();
             try {
                 switch (state) {
-                    case LIST:
-                        this.taskList.list();
-                        break;
-                    case MARK:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.mark(index);
-                        break;
-                    case UNMARK:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.unmark(index);
-                        break;
-                    case DELETE:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.delete(index);
-                        break;
-                    case ADD:
-                        task = this.parser.determineTask(command);
-                        this.taskList.addToList(task);
+                case LIST:
+                    this.taskList.list();
+                    break;
+                case MARK:
+                    index = this.parser.getLastInd(state);
+                    this.taskList.mark(index);
+                    break;
+                case UNMARK:
+                    index = this.parser.getLastInd(state);
+                    this.taskList.unmark(index);
+                    break;
+                case DELETE:
+                    index = this.parser.getLastInd(state);
+                    this.taskList.delete(index);
+                    break;
+                case ADD:
+                    task = this.parser.determineTask(command);
+                    this.taskList.addToList(task);
                 }
                 // save after every action
                 if (state != YapPal.State.LIST) {
