@@ -1,14 +1,15 @@
 package yappal;
 
-import yappal.task.Task;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import yappal.task.Task;
 
 /**
  * Creates a TaskList object for managing tasks
  */
 class TaskList {
-    public static final int MAX_LIST_LEN = 100;
+    public final static int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
     private Ui ui;
 
@@ -62,8 +63,8 @@ class TaskList {
         Task targetedTask = this.tasks.get(ptr - 1);
         targetedTask.mark();
         this.ui.printMsg(
-            "Nice! I've marked this task as done: \n" +
-            targetedTask
+            "Nice! I've marked this task as done: \n"
+            + targetedTask
         );
     }
 
@@ -80,8 +81,8 @@ class TaskList {
         Task targetedTask = this.tasks.get(ptr - 1);
         targetedTask.unmark();
         this.ui.printMsg(
-            "OK, I've marked this task as not done yet: \n" +
-            targetedTask
+            "OK, I've marked this task as not done yet: \n"
+            + targetedTask
         );
     }
 
@@ -98,8 +99,8 @@ class TaskList {
         Task targetedTask = this.tasks.get(ptr - 1);
         this.tasks.remove(ptr - 1);
         this.ui.printMsg(
-            "OK, I've removed this task: \n" +
-            targetedTask
+            "OK, I've removed this task: \n"
+            + targetedTask
         );
     }
     public ArrayList<Task> getTaskList() {

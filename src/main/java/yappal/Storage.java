@@ -1,6 +1,5 @@
 package yappal;
 
-import yappal.task.Task;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,11 +7,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import yappal.task.Task;
+
 /**
  * Storage object that handles save and load interactions with the save file
  */
 class Storage {
-    private final String SAVE_DIRECTORY;
+    private final String saveDirectory;
     private Ui ui;
     private Parser parser;
 
@@ -24,7 +25,7 @@ class Storage {
      * @param parser Reference to parser object for parsing save file
      */
     public Storage(String savePath, Ui ui, Parser parser) {
-        this.SAVE_DIRECTORY = savePath;
+        this.saveDirectory = savePath;
         this.ui = ui;
         this.parser = parser;
     }
@@ -37,7 +38,7 @@ class Storage {
      */
     public void save(ArrayList<Task> tasks) {
         try {
-            FileWriter saveFileWriter = new FileWriter(this.SAVE_DIRECTORY);
+            FileWriter saveFileWriter = new FileWriter(this.saveDirectory);
             for (int i = 0; i < tasks.size(); ++i) {
                 saveFileWriter.write(tasks.get(i).saveString() + "\n");
             }
@@ -56,7 +57,7 @@ class Storage {
      * @throws YapPalException If save file is corrupted
      */
     public ArrayList<Task> load() throws YapPalException {
-        File saveFile = new File(this.SAVE_DIRECTORY);
+        File saveFile = new File(this.saveDirectory);
         ArrayList<Task> tasks = new ArrayList<>(TaskList.MAX_LIST_LEN);
         try {
             Scanner saveReader = new Scanner(saveFile);
