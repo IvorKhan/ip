@@ -7,15 +7,26 @@ import yappal.task.ToDo;
 
 import java.util.Scanner;
 
+/**
+ * Parser object that parses user input into arguments
+ */
 class Parser {
     private Scanner scanner;
     private String lastCommand;
 
+    /**
+     * Instantiates a parser object for parsing user inputs
+     */
     public Parser() {
-        this.scanner = new Scanner(System.in);
-        this.lastCommand = "";
+        this.scanner = new Scanner(System.in); // Scanner for reading user inputs
+        this.lastCommand = ""; // command cache
     }
 
+    /**
+     * Gets user input and outputs the action to be taken by the chatbot
+     *
+     * @return The next state of the chatbot
+     */
     public YapPal.State listen() {
         this.lastCommand = this.scanner.nextLine();
         if (this.lastCommand.equals("bye")) {
@@ -37,6 +48,12 @@ class Parser {
         return lastCommand;
     }
 
+    /**
+     * Parses and returns the index for commands that contain indices
+     *
+     * @param state The action to be taken by the chatbot
+     * @return The target index of the command
+     */
     public int getLastInd(YapPal.State state) {
         if (state == YapPal.State.MARK) {
             return Integer.parseInt(this.lastCommand.substring(5));
@@ -44,6 +61,13 @@ class Parser {
         return Integer.parseInt(this.lastCommand.substring(7));
     }
 
+    /**
+     * Given a task creation command, parses the command to create the task
+     *
+     * @param command The task creation command
+     * @return The task created from the task creation command
+     * @throws YapPalException If the command does not create a task
+     */
     public Task determineTask (String command) throws YapPalException{
         if (command.length() > 4 && command.startsWith("todo")) {
             return new ToDo(command);

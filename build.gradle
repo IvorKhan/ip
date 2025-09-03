@@ -35,6 +35,7 @@ application {
 shadowJar {
     archiveBaseName = "yappal"
     archiveClassifier = null
+    archiveFileName = "YapPal.jar"
 }
 
 run{

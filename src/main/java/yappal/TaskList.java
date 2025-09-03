@@ -4,17 +4,28 @@ import yappal.task.Task;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Creates a TaskList object for managing tasks
+ */
 class TaskList {
-    // operation constants
     public static final int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
     private Ui ui;
 
+    /**
+     * Instantiates a TaskList object for managing the task list
+     *
+     * @param tasks An array of tasks to set as the initial task list
+     * @param ui Ui object for outputting text
+     */
     public TaskList(ArrayList<Task> tasks, Ui ui) {
         this.tasks = tasks;
         this.ui = ui;
     }
 
+    /**
+     * Prints a formatted list of all tasks in the task list
+     */
     public void list() {
         StringBuilder output = new StringBuilder();
         AtomicInteger index = new AtomicInteger(1);
@@ -25,7 +36,12 @@ class TaskList {
         this.ui.printMsg(output.toString());
     }
 
-    public void addToList(Task toAdd) throws YapPalException{
+    /**
+     * Adds a task to the task list
+     *
+     * @param toAdd The task to be added
+     */
+    public void addToList(Task toAdd) {
         if (toAdd == null) {
             return;
         }
@@ -33,6 +49,12 @@ class TaskList {
         this.ui.printMsg("OK, I've added the following task: " + toAdd);
     }
 
+    /**
+     * Marks a task in the task list
+     *
+     * @param ptr Index of the task to be marked
+     * @throws YapPalException If index is out of list range
+     */
     public void mark(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
@@ -45,6 +67,12 @@ class TaskList {
         );
     }
 
+    /**
+     * Unmarks a task in the task list
+     *
+     * @param ptr Index of the task to be unmarked
+     * @throws YapPalException If index is out of list range
+     */
     public void unmark(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
@@ -57,6 +85,12 @@ class TaskList {
         );
     }
 
+    /**
+     * Deletes a task in the task list
+     *
+     * @param ptr Index of the task to be deleted
+     * @throws YapPalException If index is out of list range
+     */
     public void delete(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {
             throw new YapPalException("Task not in list, please try again!");
@@ -68,7 +102,6 @@ class TaskList {
             targetedTask
         );
     }
-
     public ArrayList<Task> getTaskList() {
         return this.tasks;
     }

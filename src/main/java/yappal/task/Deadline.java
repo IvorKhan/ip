@@ -5,10 +5,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Deadline class that represents a Deadline
+ */
 public class Deadline extends Task {
     private LocalDate deadline;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy"); // for formatting dates in output
 
+    /**
+     * Instantiates a Deadline object
+     *
+     * @param command User's input for creating a Deadline Object
+     * @throws YapPalException If user's inputs do not follow the deadline instantiation format
+     */
     public Deadline(String command) throws YapPalException {
         super(command, 9);
         int DEADLINE_DEADLINE_OFFSET = 4;

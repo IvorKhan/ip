@@ -8,17 +8,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Storage object that handles save and load interactions with the save file
+ */
 class Storage {
     private final String SAVE_DIRECTORY;
     private Ui ui;
     private Parser parser;
 
+    /**
+     * Instantiates a Storage object for saving and loading
+     *
+     * @param savePath Path to save file
+     * @param ui Reference to ui object for printing messages
+     * @param parser Reference to parser object for parsing save file
+     */
     public Storage(String savePath, Ui ui, Parser parser) {
         this.SAVE_DIRECTORY = savePath;
         this.ui = ui;
         this.parser = parser;
     }
 
+    /**
+     * Saves tasks to the save file
+     * Uses the save file path defined during initialisation
+     *
+     * @param tasks Path to save file
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             FileWriter saveFileWriter = new FileWriter(this.SAVE_DIRECTORY);
@@ -31,6 +47,14 @@ class Storage {
         }
     }
 
+    /**
+     * Load tasks from the save file
+     * Uses the save file path defined during initialisation
+     * Creates save file if file not found
+     *
+     * @return Array of tasks read from save file
+     * @throws YapPalException If save file is corrupted
+     */
     public ArrayList<Task> load() throws YapPalException {
         File saveFile = new File(this.SAVE_DIRECTORY);
         ArrayList<Task> tasks = new ArrayList<>(TaskList.MAX_LIST_LEN);

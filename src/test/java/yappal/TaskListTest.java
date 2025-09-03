@@ -38,13 +38,9 @@ public class TaskListTest {
 
     @Test
     public void addToList_addNull_noAction() {
-        try {
-            this.taskList.addToList(null);
-            ArrayList<Task> correctList = new ArrayList<>();
-            assertEquals(this.taskList.getTaskList(), correctList);
-        } catch (YapPalException e) {
-            fail();
-        }
+        this.taskList.addToList(null);
+        ArrayList<Task> correctList = new ArrayList<>();
+        assertEquals(this.taskList.getTaskList(), correctList);
     }
 
     @Test

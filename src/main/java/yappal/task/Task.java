@@ -2,10 +2,20 @@ package yappal.task;
 
 import yappal.YapPalException;
 
+/**
+ * Abstract class for all Tasks
+ */
 public abstract class Task {
     private String name;
     private boolean marked;
 
+    /**
+     * Initialisation for fields common to all classes
+     *
+     * @param command User input for creating a task
+     * @param offset Offset of name characters based on task type
+     * @throws YapPalException If no name was specified
+     */
     public Task(String command, int offset) throws YapPalException {
         int nameEndIndex = command.indexOf('/');
         if (nameEndIndex == -1) {
@@ -32,6 +42,11 @@ public abstract class Task {
         return this.marked;
     }
 
+    /**
+     * Generates the command for creating the task
+     *
+     * @return A String that, when input, will generate a task with the same details
+     */
     public String saveString() {
         if (this.isMarked()) {
             return this.name + " /mark";

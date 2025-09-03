@@ -1,12 +1,18 @@
 package yappal;
 
+/**
+ * Creates an Ui object for managing outputs
+ */
 class Ui {
-    // chatbot constants
     public final String BOT_NAME;
     public final String INTRO_MSG;
     public static final String GOODBYE_MSG =
         "Hope to see you again soon!";
 
+    /**
+     * Instantiates the Ui object for managing outputs
+     * @param name Name of the bot
+     */
     public Ui(String name) {
         this.BOT_NAME = name;
         this.INTRO_MSG =
@@ -22,6 +28,11 @@ class Ui {
         this.printMsg(this.GOODBYE_MSG);
     }
 
+    /**
+     * Prints a formatted message
+     *
+     * @param msg Message to be printed
+     */
     public void printMsg(String msg) {
         System.out.println(
             "____________________________________________________________ \n" +

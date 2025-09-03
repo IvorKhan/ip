@@ -1,5 +1,6 @@
 package yappal;
 
+import org.junit.jupiter.api.BeforeEach;
 import yappal.task.Deadline;
 import yappal.task.Event;
 import yappal.task.Task;
@@ -7,7 +8,9 @@ import yappal.task.Task;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-import org.junit.jupiter.api.BeforeEach;
+import java.util.NoSuchElementException;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import yappal.task.ToDo;
 
@@ -15,20 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ParserTest {
-    Parser parser;
-
-    @BeforeEach
-    void setUp() {
-        this.parser = new Parser();
-    }
+    static Parser parser;
 
     @Test
     public void listen_terminate_success() {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("bye".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.TERMINATE);
+        assertEquals(YapPal.State.TERMINATE, parser.listen());
 
         System.setIn(systemIn);
     }
@@ -38,8 +37,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("list".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.LIST);
+        assertEquals(parser.listen(), YapPal.State.LIST);
 
         System.setIn(systemIn);
     }
@@ -49,8 +49,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("mark 1".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.MARK);
+        assertEquals(parser.listen(), YapPal.State.MARK);
 
         System.setIn(systemIn);
     }
@@ -60,8 +61,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("unmark 1".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.UNMARK);
+        assertEquals(parser.listen(), YapPal.State.UNMARK);
 
         System.setIn(systemIn);
     }
@@ -71,8 +73,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("delete 1".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.DELETE);
+        assertEquals(parser.listen(), YapPal.State.DELETE);
 
         System.setIn(systemIn);
     }
@@ -82,8 +85,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("todo todo".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.ADD);
+        assertEquals(parser.listen(), YapPal.State.ADD);
 
         System.setIn(systemIn);
     }
@@ -93,8 +97,9 @@ public class ParserTest {
         InputStream systemIn = System.in;
         ByteArrayInputStream testIn = new ByteArrayInputStream("dfjsakflksja".getBytes());
         System.setIn(testIn);
+        ParserTest.parser = new Parser();
 
-        assertEquals(this.parser.listen(), YapPal.State.ADD);
+        assertEquals(parser.listen(), YapPal.State.ADD);
 
         System.setIn(systemIn);
     }
@@ -103,7 +108,7 @@ public class ParserTest {
     public void determineTask_toDo_success() {
         try {
             ToDo correctToDo = new ToDo("todo todo");
-            assertEquals(this.parser.determineTask("todo todo"), correctToDo);
+            assertEquals(parser.determineTask("todo todo").toString(), correctToDo.toString());
         } catch (YapPalException e) {
             fail();
         }
@@ -112,8 +117,8 @@ public class ParserTest {
     @Test
     public void determineTask_deadline_success() {
         try {
-            Deadline correctToDo = new Deadline("deadline deadline /by 1111-11-11");
-            assertEquals(this.parser.determineTask("deadline deadline /by 1111-11-11"), correctToDo);
+            Deadline correctDeadline = new Deadline("deadline deadline /by 1111-11-11");
+            assertEquals(parser.determineTask("deadline deadline /by 1111-11-11").toString(), correctDeadline.toString());
         } catch (YapPalException e) {
             fail();
         }
@@ -122,8 +127,8 @@ public class ParserTest {
     @Test
     public void determineTask_event_success() {
         try {
-            Event correctToDo = new Event("event event /from 1111-11-11 /to 1111-11-11");
-            assertEquals(this.parser.determineTask("event event /from 1111-11-11 /to 1111-11-11"), correctToDo);
+            Event correctEvent = new Event("event event /from 1111-11-11 /to 1111-11-11");
+            assertEquals(parser.determineTask("event event /from 1111-11-11 /to 1111-11-11").toString(), correctEvent.toString());
         } catch (YapPalException e) {
             fail();
         }
@@ -132,7 +137,7 @@ public class ParserTest {
     @Test
     public void determineTask_invalidInput_exception() {
         try {
-            this.parser.determineTask("not a command");
+            parser.determineTask("not a command");
             fail();
         } catch (YapPalException e) {
             assertEquals(e.getMessage(), "Invalid task, please try again!");
