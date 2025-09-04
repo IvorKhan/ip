@@ -26,14 +26,14 @@ public class MainWindow extends AnchorPane {
     private YapPal yapPal;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
-    private Image dukeImage = new Image(this.getClass().getResourceAsStream("/images/yappal.jpg"));
+    private Image yapPalImage = new Image(this.getClass().getResourceAsStream("/images/yappal.gif"));
 
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the YapPal instance */
     public void setYapPal(YapPal d) {
         yapPal = d;
     }
@@ -46,9 +46,10 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = yapPal.getResponse(input);
+        YapPal.State state = yapPal.getState();
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getYapPalDialog(response, dukeImage)
+                DialogBox.getYapPalDialog(response, yapPalImage, state)
         );
         userInput.clear();
     }

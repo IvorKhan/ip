@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import yappal.YapPal;
+
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
  * and a label containing text from the speaker.
@@ -24,6 +26,13 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Instantiates a dialog box consisting of an ImageView to represent the speaker's face
+     * and a label containing text from the speaker.
+     *
+     * @param text The String in the dialogue box.
+     * @param img The profile picture attached to the dialogue box
+     */
     private DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
@@ -46,15 +55,34 @@ public class DialogBox extends HBox {
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
         setAlignment(Pos.TOP_LEFT);
+        dialog.getStyleClass().add("reply-label");
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
-    public static DialogBox getYapPalDialog(String text, Image img) {
+    public static DialogBox getYapPalDialog(String text, Image img, YapPal.State state) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.changeDialogStyle(state);
         return db;
+    }
+
+    private void changeDialogStyle(YapPal.State state) {
+        switch(state) {
+        case ADD:
+            dialog.getStyleClass().add("add-label");
+            break;
+        case MARK:
+        case UNMARK:
+            dialog.getStyleClass().add("marked-label");
+            break;
+        case DELETE:
+            dialog.getStyleClass().add("delete-label");
+            break;
+        default:
+            // Do nothing
+        }
     }
 }

@@ -13,6 +13,7 @@ public class YapPal {
     private Parser parser; // parses user inputs
     private Storage storage; // manages save and load functions
     private Ui ui; // prints data for the user
+    private State state;
 
     // State enum tells YapPal what to do next
     public enum State {
@@ -66,47 +67,6 @@ public class YapPal {
 
         // listens for user input, then performs action accordingly
         String command;
-        Task task;
-        int index;
-
-        while (state != YapPal.State.TERMINATE) {
-            state = this.parser.listen();
-            command = this.parser.getLastCommand();
-            try {
-                switch (state) {
-                    case LIST:
-                        this.taskList.list();
-                        break;
-                    case MARK:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.mark(index);
-                        break;
-                    case UNMARK:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.unmark(index);
-                        break;
-                    case FIND:
-                        this.taskList.find(command);
-                        break;
-                    case DELETE:
-                        index = this.parser.getLastInd(state);
-                        this.taskList.delete(index);
-                        break;
-                    case ADD:
-                        task = this.parser.determineTask(command);
-                        this.taskList.addToList(task);
-                        break;
-                    default:
-                        throw new YapPalException("Unknown command, please try again");
-                }
-                // save after every action
-                if (state != YapPal.State.LIST) {
-                    this.storage.save(this.taskList.getTaskList());
-                }
-            } catch (YapPalException exception) { // outputs errors with user inputs
-                this.ui.printMsg(exception.toString());
-            }
-        }
 
         // terminates session
         this.ui.printGoodbye();
@@ -115,8 +75,50 @@ public class YapPal {
     /**
      * Generates a response for the user's chat message.
      */
-    public String getResponse(String input) {
-        return "Duke heard: " + input;
+    public String getResponse(String command) {
+        String response;
+        Task task;
+        int index;
+        state = this.parser.listen(command);
+        try {
+            switch (state) {
+            case LIST:
+                response = this.taskList.list();
+                break;
+            case MARK:
+                index = this.parser.getLastInd(state);
+                response = this.taskList.mark(index);
+                break;
+            case UNMARK:
+                index = this.parser.getLastInd(state);
+                response = this.taskList.unmark(index);
+                break;
+            case FIND:
+                response = this.taskList.find(command);
+                break;
+            case DELETE:
+                index = this.parser.getLastInd(state);
+                response = this.taskList.delete(index);
+                break;
+            case ADD:
+                task = this.parser.determineTask(command);
+                response = this.taskList.addToList(task);
+                break;
+            default:
+                throw new YapPalException("Unknown command, please try again");
+            }
+            // save after every action
+            if (state != YapPal.State.LIST) {
+                this.storage.save(this.taskList.getTaskList());
+            }
+        } catch (YapPalException exception) { // outputs errors with user inputs
+            response = ("Error: " + exception.getMessage());
+        }
+        return response;
+    }
+
+    public State getState() {
+        return state;
     }
 
     public static void main(String[] args) {

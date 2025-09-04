@@ -27,8 +27,8 @@ class Parser {
      *
      * @return The next state of the chatbot
      */
-    public YapPal.State listen() {
-        this.lastCommand = this.scanner.nextLine();
+    public YapPal.State listen(String command) {
+        this.lastCommand = command;
         if (this.lastCommand.equals("bye")) {
             return YapPal.State.TERMINATE;
         }
