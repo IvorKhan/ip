@@ -73,9 +73,11 @@ class Parser {
     public Task determineTask(String command) throws YapPalException {
         if (command.length() > 4 && command.startsWith("todo")) {
             return new ToDo(command);
-        } else if (command.length() > 8 && command.startsWith("deadline")) {
+        }
+        if (command.length() > 8 && command.startsWith("deadline")) {
             return new Deadline(command);
-        } else if (command.length() > 5 && command.startsWith("event")) {
+        }
+        if (command.length() > 5 && command.startsWith("event")) {
             return new Event(command);
         }
         // if none of the above:

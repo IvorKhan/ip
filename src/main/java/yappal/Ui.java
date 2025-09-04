@@ -4,9 +4,15 @@ package yappal;
  * Creates an Ui object for managing outputs
  */
 class Ui {
+<<<<<<< HEAD
     public final String botName;
     public final String introMsg;
     public final static String GOODBYE_MSG =
+=======
+    private final String BOT_NAME;
+    private final String INTRO_MSG;
+    private static final String GOODBYE_MSG =
+>>>>>>> branch-A-CheckStyle
         "Hope to see you again soon!";
 
     /**
