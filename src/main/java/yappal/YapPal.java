@@ -8,7 +8,7 @@ import yappal.task.Task;
  * YapPal Class
  * Runs the YapPal app and centrally manages all functions
  */
-class YapPal {
+public class YapPal {
     private TaskList taskList; // stores tasks
     private Parser parser; // parses user inputs
     private Storage storage; // manages save and load functions
@@ -110,6 +110,13 @@ class YapPal {
 
         // terminates session
         this.ui.printGoodbye();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Duke heard: " + input;
     }
 
     public static void main(String[] args) {
