@@ -11,14 +11,12 @@ import yappal.task.ToDo;
  * Parser object that parses user input into arguments
  */
 class Parser {
-    private Scanner scanner;
     private String lastCommand;
 
     /**
      * Instantiates a parser object for parsing user inputs
      */
     public Parser() {
-        this.scanner = new Scanner(System.in); // Scanner for reading user inputs
         this.lastCommand = ""; // command cache
     }
 
@@ -44,10 +42,6 @@ class Parser {
             return YapPal.State.DELETE;
         }
         return YapPal.State.ADD;
-    }
-
-    public String getLastCommand() {
-        return lastCommand;
     }
 
     /**

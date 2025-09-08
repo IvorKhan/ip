@@ -6,8 +6,6 @@ package yappal;
 class Ui {
     public final String botName;
     public final String introMsg;
-    public final static String GOODBYE_MSG =
-        "Hope to see you again soon!";
 
     /**
      * Instantiates the Ui object for managing outputs
@@ -20,12 +18,8 @@ class Ui {
             + "What can I do for you?";
     }
 
-    public void printIntro() {
-        this.printMsg(this.introMsg);
-    }
-
-    public void printGoodbye() {
-        this.printMsg(Ui.GOODBYE_MSG);
+    public String getIntroMsg() {
+        return this.introMsg;
     }
 
     /**

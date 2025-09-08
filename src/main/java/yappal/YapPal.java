@@ -18,7 +18,6 @@ public class YapPal {
     // State enum tells YapPal what to do next
     public enum State {
         TERMINATE,
-        INIT,
         LIST,
         MARK,
         UNMARK,
@@ -42,34 +41,7 @@ public class YapPal {
         } catch (YapPalException exception) {
             tasks = new ArrayList<>();
         }
-        this.taskList = new TaskList(tasks, this.ui);
-    }
-
-    /**
-     * Runs the YapPal instance
-     *
-     * Input options:
-     * bye - Terminates instance
-     * list - Prints all tasks in the task list
-     * mark [int] - Marks the task at index [int]
-     * unmark [int] - Unmarks the task at index [int]
-     * delete [int] - Deletes the task at index [int]
-     * todo [name] - Appends a todo object to the task list with name [name]
-     * deadline [name] /by [date] - Appends a deadline object to the task list with name [name]
-     *                              and deadline [date] (date must be input in YYYY-MM-DD)
-     * event [event] /from [date1] /to [date2] - Appends an event object to the task list with name [name]
-     *                              from [date1] to [date2] (dates must be input in YYYY-MM-DD)
-     */
-    public void run() {
-        // initialises State variable and prints intro
-        this.ui.printIntro();
-        State state = YapPal.State.INIT;
-
-        // listens for user input, then performs action accordingly
-        String command;
-
-        // terminates session
-        this.ui.printGoodbye();
+        this.taskList = new TaskList(tasks);
     }
 
     /**
@@ -121,7 +93,7 @@ public class YapPal {
         return state;
     }
 
-    public static void main(String[] args) {
-        new YapPal().run();
+    public String getIntroMsg() {
+        return ui.getIntroMsg();
     }
 }

@@ -36,6 +36,9 @@ public class MainWindow extends AnchorPane {
     /** Injects the YapPal instance */
     public void setYapPal(YapPal d) {
         yapPal = d;
+        dialogContainer.getChildren().add(
+                DialogBox.getYapPalDialog(yapPal.getIntroMsg(), yapPalImage, YapPal.State.ADD)
+        );
     }
 
     /**

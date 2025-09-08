@@ -20,7 +20,7 @@ public class TaskListTest {
     void setUp() {
         this.ui = new Ui("YapPal");
         this.tasks = new ArrayList<>();
-        this.taskList = new TaskList(this.tasks, this.ui);
+        this.taskList = new TaskList(this.tasks);
     }
 
     @Test
