@@ -20,6 +20,7 @@ class TaskList {
      * @param ui Ui object for outputting text
      */
     public TaskList(ArrayList<Task> tasks, Ui ui) {
+        assert tasks != null : "TaskList input should not be null!";
         this.tasks = tasks;
         this.ui = ui;
     }
@@ -125,6 +126,7 @@ class TaskList {
         return "OK, I've removed this task: \n"
                 + targetedTask;
     }
+
     public ArrayList<Task> getTaskList() {
         return this.tasks;
     }

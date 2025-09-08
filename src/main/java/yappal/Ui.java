@@ -31,12 +31,13 @@ class Ui {
     /**
      * Prints a formatted message
      *
-     * @param msg Message to be printed
+     * @param message Message to be printed
      */
-    public void printMsg(String msg) {
+    public void printMsg(String message) {
+        assert message != null : "Null input received, input should not be null!";
         System.out.println(
             "____________________________________________________________ \n"
-            + msg + " \n"
+            + message + " \n"
             + "____________________________________________________________ \n"
         );
     }
