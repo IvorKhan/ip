@@ -21,29 +21,39 @@ public class FixedDurationTask extends Task {
     public FixedDurationTask(String command) throws YapPalException {
         super(command, OFFSET_NAME);
 
-        int hrIndex = command.indexOf("/hr");
-        if (hrIndex + OFFSET_HR >= command.length()) {
+        int hourIndex = command.indexOf("/hr");
+        int minuteIndex = command.indexOf("/min");
+
+        if (hourIndex + OFFSET_HR >= command.length()) {
             throw new YapPalException("No hours specified, please try again!");
         }
-        if (hrIndex == -1) {
+        if (hourIndex == -1) {
             this.hours = 0;
         } else {
             try {
-                this.hours = Integer.parseInt(command.substring(hrIndex + OFFSET_HR));
+                System.out.println(hourIndex + " " + minuteIndex);
+                if (hourIndex < minuteIndex) {
+                    this.hours = Integer.parseInt(command.substring(hourIndex + OFFSET_HR, minuteIndex - 1).strip());
+                } else {
+                    this.hours = Integer.parseInt(command.substring(hourIndex + OFFSET_HR).strip());
+                }
             } catch (NumberFormatException exception) {
                 throw new YapPalException("Invalid argument for hours!");
             }
         }
 
-        int minIndex = command.indexOf("/min");
-        if (minIndex + OFFSET_MIN >= command.length()) {
+        if (minuteIndex + OFFSET_MIN >= command.length()) {
             throw new YapPalException("No minutes specified, please try again!");
         }
-        if (minIndex == -1) {
+        if (minuteIndex == -1) {
             this.minutes = 0;
         } else {
             try {
-                this.minutes = Integer.parseInt(command.substring(minIndex + OFFSET_MIN));
+                if (minuteIndex < hourIndex) {
+                    this.hours = Integer.parseInt(command.substring(minuteIndex + OFFSET_HR, hourIndex - 1).strip());
+                } else {
+                    this.minutes = Integer.parseInt(command.substring(minuteIndex + OFFSET_MIN).strip());
+                }
             } catch (NumberFormatException exception) {
                 throw new YapPalException("Invalid argument for minutes!");
             }
