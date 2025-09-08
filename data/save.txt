@@ -1,8 +1,9 @@
-event event              /mark /from 1111-11-11 /to 1111-11-11
+event event                /mark /from 1111-11-11 /to 1111-11-11
 todo todo
-event attend 2103t         /mark /from 2025-09-03 /to 2025-09-03
+event attend 2103t           /mark /from 2025-09-03 /to 2025-09-03
 todo todo
 todo todo
 todo todo
-duration duration   /hr 1 /min 0
-duration duration  /hr 1 /min 1
+duration duration     /mark /hr 1 /min 0
+duration duration    /hr 1 /min 1
+duration duration   /hr 1231 /min 21

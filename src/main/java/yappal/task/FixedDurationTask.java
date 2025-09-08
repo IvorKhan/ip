@@ -31,7 +31,6 @@ public class FixedDurationTask extends Task {
             this.hours = 0;
         } else {
             try {
-                System.out.println(hourIndex + " " + minuteIndex);
                 if (hourIndex < minuteIndex) {
                     this.hours = Integer.parseInt(command.substring(hourIndex + OFFSET_HR, minuteIndex - 1).strip());
                 } else {
@@ -50,7 +49,7 @@ public class FixedDurationTask extends Task {
         } else {
             try {
                 if (minuteIndex < hourIndex) {
-                    this.hours = Integer.parseInt(command.substring(minuteIndex + OFFSET_HR, hourIndex - 1).strip());
+                    this.minutes = Integer.parseInt(command.substring(minuteIndex + OFFSET_MIN, hourIndex - 1).strip());
                 } else {
                     this.minutes = Integer.parseInt(command.substring(minuteIndex + OFFSET_MIN).strip());
                 }
@@ -76,13 +75,21 @@ public class FixedDurationTask extends Task {
     public String toString() {
         String durationString = " (takes ";
         if (this.hours != 0) {
-            durationString += this.hours + " hours";
+            if (this.hours > 1) {
+                durationString += this.hours + " hours";
+            } else {
+                durationString += "1 hour";
+            }
             if (this.minutes != 0) {
                 durationString += " ";
             }
         }
         if (this.minutes != 0) {
-            durationString += this.minutes + "minutes";
+            if (this.minutes > 1) {
+                durationString += this.minutes + " minutes";
+            } else {
+                durationString += "1 minute";
+            }
         }
         durationString += ")";
         return "[F]" + super.toString() + durationString;
