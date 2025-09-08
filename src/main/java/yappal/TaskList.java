@@ -11,18 +11,15 @@ import yappal.task.Task;
 class TaskList {
     public final static int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
-    private Ui ui;
 
     /**
      * Instantiates a TaskList object for managing the task list
      *
      * @param tasks An array of tasks to set as the initial task list
-     * @param ui Ui object for outputting text
      */
-    public TaskList(ArrayList<Task> tasks, Ui ui) {
+    public TaskList(ArrayList<Task> tasks) {
         assert tasks != null : "TaskList input should not be null!";
         this.tasks = tasks;
-        this.ui = ui;
     }
 
     /**
@@ -45,7 +42,6 @@ class TaskList {
      *
      * @param toAdd The task to be added
      * @return YapPal's response
-     * @throws YapPalException If index is out of list range
      */
     public String addToList(Task toAdd) {
         if (toAdd == null) {

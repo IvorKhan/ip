@@ -54,7 +54,7 @@ class Storage {
      * Uses the save file path defined during initialisation
      * Creates save file if file not found
      *
-     * @return Array of tasks read from save file
+     * @return ArrayList of tasks loaded from save file
      * @throws YapPalException If save file is corrupted
      */
     public ArrayList<Task> load() throws YapPalException {
