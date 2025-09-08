@@ -42,6 +42,7 @@ public class YapPal {
         } catch (YapPalException exception) {
             tasks = new ArrayList<>();
         }
+        assert tasks != null : "TaskList is not instantiated";
         this.taskList = new TaskList(tasks, this.ui);
     }
 
@@ -80,6 +81,7 @@ public class YapPal {
         Task task;
         int index;
         state = this.parser.listen(command);
+        assert state != null : "Listen did not correctly return a state";
         try {
             switch (state) {
             case LIST:
@@ -114,6 +116,7 @@ public class YapPal {
         } catch (YapPalException exception) { // outputs errors with user inputs
             response = ("Error: " + exception.getMessage());
         }
+        assert response != null : "No response returned";
         return response;
     }
 

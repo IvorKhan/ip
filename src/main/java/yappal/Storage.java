@@ -37,6 +37,7 @@ class Storage {
      * @param tasks Path to save file
      */
     public void save(ArrayList<Task> tasks) {
+        assert tasks != null : "Cannot save uninitialized task list!";
         try {
             FileWriter saveFileWriter = new FileWriter(this.saveDirectory);
             for (int i = 0; i < tasks.size(); ++i) {
