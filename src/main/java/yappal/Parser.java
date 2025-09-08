@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import yappal.task.Deadline;
 import yappal.task.Event;
+import yappal.task.FixedDurationTask;
 import yappal.task.Task;
 import yappal.task.ToDo;
 
@@ -75,6 +76,9 @@ class Parser {
         }
         if (command.length() > 5 && command.startsWith("event")) {
             return new Event(command);
+        }
+        if (command.length() > 8 && command.startsWith("duration")) {
+            return new FixedDurationTask(command);
         }
         // if none of the above:
         throw new YapPalException("Invalid task, please try again!");
