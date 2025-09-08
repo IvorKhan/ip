@@ -51,6 +51,8 @@ class Parser {
      * @return The target index of the command
      */
     public int getLastInd(YapPal.State state) {
+        assert state == YapPal.State.MARK || state == YapPal.State.UNMARK || state == YapPal.State.DELETE
+                : "Command is incompatible with this function!";
         if (state == YapPal.State.MARK) {
             return Integer.parseInt(this.lastCommand.substring(5));
         }

@@ -18,6 +18,7 @@ class TaskList {
      * @param tasks An array of tasks to set as the initial task list
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "TaskList input should not be null!";
         this.tasks = tasks;
     }
 
@@ -121,6 +122,7 @@ class TaskList {
         return "OK, I've removed this task: \n"
                 + targetedTask;
     }
+
     public ArrayList<Task> getTaskList() {
         return this.tasks;
     }
