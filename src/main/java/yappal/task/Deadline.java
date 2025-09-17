@@ -7,20 +7,19 @@ import java.time.format.DateTimeParseException;
 import yappal.YapPalException;
 
 /**
- * Deadline class that represents a Deadline
+ * Deadline class that represents a Deadline.
  */
 public class Deadline extends Task {
     private LocalDate deadline;
-    // for formatting dates in output
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final static int OFFSET_BY = 4;
     private final static int OFFSET_NAME = 9;
 
     /**
-     * Instantiates a Deadline object
+     * Instantiates a Deadline object.
      *
-     * @param command User's input for creating a Deadline Object
-     * @throws YapPalException If user's inputs do not follow the deadline instantiation format
+     * @param command User's input for creating a Deadline Object.
+     * @throws YapPalException If user's inputs do not follow the deadline instantiation format.
      */
     public Deadline(String command) throws YapPalException {
         super(command, OFFSET_NAME);

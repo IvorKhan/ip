@@ -3,18 +3,18 @@ package yappal.task;
 import yappal.YapPalException;
 
 /**
- * Abstract class for all Tasks
+ * Abstract class for all Tasks.
  */
 public abstract class Task {
     private String name;
-    private boolean marked;
+    private boolean isMarked;
 
     /**
-     * Initialisation for fields common to all classes
+     * Initialisation for fields common to all classes.
      *
-     * @param command User input for creating a task
-     * @param offset Offset of name characters based on task type
-     * @throws YapPalException If no name was specified
+     * @param command User input for creating a task.
+     * @param offset Offset of name characters based on task type.
+     * @throws YapPalException If no name was specified.
      */
     public Task(String command, int offset) throws YapPalException {
         int nameEndIndex = command.indexOf('/');
@@ -26,19 +26,19 @@ public abstract class Task {
             }
             this.name = command.substring(offset, nameEndIndex);
         }
-        this.marked = command.contains("/mark");
+        this.isMarked = command.contains("/mark");
     }
 
     public void mark() {
-        this.marked = true;
+        this.isMarked = true;
     }
 
     public void unmark() {
-        this.marked = false;
+        this.isMarked = false;
     }
 
     public boolean isMarked() {
-        return this.marked;
+        return this.isMarked;
     }
 
     public String getName() {
@@ -46,9 +46,9 @@ public abstract class Task {
     }
 
     /**
-     * Generates the command for creating the task
+     * Generates the command for creating the task.
      *
-     * @return A String that, when input, will generate a task with the same details
+     * @return A String that, when input, will generate a task with the same details.
      */
     public String saveString() {
         if (this.isMarked()) {

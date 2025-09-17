@@ -1,15 +1,15 @@
 package yappal;
 
 /**
- * Creates an Ui object for managing outputs
+ * Creates an Ui object for managing outputs.
  */
 class Ui {
     public final String botName;
     public final String introMsg;
 
     /**
-     * Instantiates the Ui object for managing outputs
-     * @param name Name of the bot
+     * Instantiates the Ui object for managing outputs.
+     * @param name The name of the bot.
      */
     public Ui(String name) {
         this.botName = name;
@@ -23,9 +23,9 @@ class Ui {
     }
 
     /**
-     * Prints a formatted message
+     * Prints a formatted message.
      *
-     * @param message Message to be printed
+     * @param message Message to be printed.
      */
     public void printMsg(String message) {
         assert message != null : "Null input received, input should not be null!";

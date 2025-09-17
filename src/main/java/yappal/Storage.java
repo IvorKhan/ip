@@ -10,7 +10,7 @@ import java.util.Scanner;
 import yappal.task.Task;
 
 /**
- * Storage object that handles save and load interactions with the save file
+ * Storage object that handles save and load interactions with the save file.
  */
 class Storage {
     private final String saveDirectory;
@@ -18,11 +18,11 @@ class Storage {
     private Parser parser;
 
     /**
-     * Instantiates a Storage object for saving and loading
+     * Instantiates a Storage object for saving and loading.
      *
-     * @param savePath Path to save file
-     * @param ui Reference to ui object for printing messages
-     * @param parser Reference to parser object for parsing save file
+     * @param savePath Path to save file.
+     * @param ui Reference to ui object for printing messages.
+     * @param parser Reference to parser object for parsing save file.
      */
     public Storage(String savePath, Ui ui, Parser parser) {
         this.saveDirectory = savePath;
@@ -31,10 +31,10 @@ class Storage {
     }
 
     /**
-     * Saves tasks to the save file
-     * Uses the save file path defined during initialisation
+     * Saves tasks to the save file.
+     * Uses the save file path defined during initialisation.
      *
-     * @param tasks Path to save file
+     * @param tasks Path to save file.
      */
     public void save(ArrayList<Task> tasks) {
         assert tasks != null : "Cannot save uninitialized task list!";
@@ -50,12 +50,10 @@ class Storage {
     }
 
     /**
-     * Load tasks from the save file
-     * Uses the save file path defined during initialisation
-     * Creates save file if file not found
+     * Load tasks from the save file.
      *
-     * @return ArrayList of tasks loaded from save file
-     * @throws YapPalException If save file is corrupted
+     * @return ArrayList of tasks loaded from save file.
+     * @throws YapPalException If save file is corrupted.
      */
     public ArrayList<Task> load() throws YapPalException {
         File saveFile = new File(this.saveDirectory);
