@@ -9,22 +9,22 @@ import yappal.task.Task;
 import yappal.task.ToDo;
 
 /**
- * Parser object that parses user input into arguments
+ * Parser object that parses user input into arguments.
  */
 class Parser {
     private String lastCommand;
 
     /**
-     * Instantiates a parser object for parsing user inputs
+     * Instantiates a parser object for parsing user inputs.
      */
     public Parser() {
         this.lastCommand = ""; // command cache
     }
 
     /**
-     * Gets user input and outputs the action to be taken by the chatbot
+     * Gets user input and outputs the action to be taken by the chatbot.
      *
-     * @return The next state of the chatbot
+     * @return The next state of the chatbot.
      */
     public YapPal.State listen(String command) {
         this.lastCommand = command;
@@ -46,10 +46,10 @@ class Parser {
     }
 
     /**
-     * Parses and returns the index for commands that contain indices
+     * Parses and returns the index for commands that contain indices.
      *
-     * @param state The action to be taken by the chatbot
-     * @return The target index of the command
+     * @param state The action to be taken by the chatbot.
+     * @return The target index of the command.
      */
     public int getLastInd(YapPal.State state) {
         assert state == YapPal.State.MARK || state == YapPal.State.UNMARK || state == YapPal.State.DELETE
@@ -61,11 +61,11 @@ class Parser {
     }
 
     /**
-     * Given a task creation command, parses the command to create the task
+     * Given a task creation command, parses the command to create the task.
      *
-     * @param command The task creation command
-     * @return The task created from the task creation command
-     * @throws YapPalException If the command does not create a task
+     * @param command The task creation command.
+     * @return The task created from the task creation command.
+     * @throws YapPalException If the command does not create a task.
      */
     public Task determineTask(String command) throws YapPalException {
         if (command.length() > 4 && command.startsWith("todo")) {

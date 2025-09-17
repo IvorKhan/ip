@@ -6,16 +6,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import yappal.task.Task;
 
 /**
- * Creates a TaskList object for managing tasks
+ * Creates a TaskList object for managing tasks.
  */
 class TaskList {
     public final static int MAX_LIST_LEN = 100;
     private ArrayList<Task> tasks;
 
     /**
-     * Instantiates a TaskList object for managing the task list
+     * Instantiates a TaskList object for managing the task list.
      *
-     * @param tasks An array of tasks to set as the initial task list
+     * @param tasks An array of tasks to set as the initial task list.
      */
     public TaskList(ArrayList<Task> tasks) {
         assert tasks != null : "TaskList input should not be null!";
@@ -23,9 +23,9 @@ class TaskList {
     }
 
     /**
-     * Prints a formatted list of all tasks in the task list
+     * Prints a formatted list of all tasks in the task list.
      *
-     * @return The list of tasks
+     * @return The list of tasks.
      */
     public String list() {
         StringBuilder output = new StringBuilder();
@@ -38,10 +38,10 @@ class TaskList {
     }
 
     /**
-     * Adds a task to the task list
+     * Adds a task to the task list.
      *
-     * @param toAdd The task to be added
-     * @return YapPal's response
+     * @param toAdd The task to be added.
+     * @return YapPal's response.
      */
     public String addToList(Task toAdd) {
         if (toAdd == null) {
@@ -52,11 +52,11 @@ class TaskList {
     }
 
     /**
-     * Marks a task in the task list
+     * Marks a task in the task list.
      *
-     * @param ptr Index of the task to be marked
-     * @return YapPal's response
-     * @throws YapPalException If index is out of list range
+     * @param ptr Index of the task to be marked.
+     * @return YapPal's response.
+     * @throws YapPalException If index is out of list range.
      */
     public String mark(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {
@@ -69,11 +69,11 @@ class TaskList {
     }
 
     /**
-     * Unmarks a task in the task list
+     * Unmarks a task in the task list.
      *
-     * @param command The command input by the user
-     * @return The found list
-     * @throws YapPalException If index is out of list range
+     * @param command The command input by the user.
+     * @return The found list.
+     * @throws YapPalException If index is out of list range.
      */
     public String find(String command) throws YapPalException {
         final int offset = 5;
@@ -90,11 +90,11 @@ class TaskList {
     }
 
     /**
-     * Unmarks a task in the task list
+     * Unmarks a task in the task list.
      *
-     * @param ptr Index of the task to be unmarked
-     * @return YapPal's response
-     * @throws YapPalException If index is out of list range
+     * @param ptr Index of the task to be unmarked.
+     * @return YapPal's response.
+     * @throws YapPalException If index is out of list range.
      */
     public String unmark(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {
@@ -107,11 +107,11 @@ class TaskList {
     }
 
     /**
-     * Deletes a task in the task list
+     * Deletes a task in the task list.
      *
-     * @param ptr Index of the task to be deleted
-     * @return YapPal's response
-     * @throws YapPalException If index is out of list range
+     * @param ptr Index of the task to be deleted.
+     * @return YapPal's response.
+     * @throws YapPalException If index is out of list range.
      */
     public String delete(int ptr) throws YapPalException {
         if (ptr > this.tasks.size() || ptr < 1) {

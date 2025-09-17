@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import yappal.task.Task;
 
 /**
- * YapPal Class
- * Runs the YapPal app and centrally manages all functions
+ * The YapPal Class.
+ * Runs the YapPal app and centrally manages all functions.
  */
 public class YapPal {
     private TaskList taskList; // stores tasks
@@ -27,7 +27,7 @@ public class YapPal {
     }
 
     /**
-     * Instantiates a YapPal instance
+     * Instantiates a YapPal instance.
      */
     public YapPal() {
         this.parser = new Parser();
