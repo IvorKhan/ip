@@ -1,6 +1,4 @@
+deadline submit 2103t   /by 2025-09-19
 todo todo
-todo todo /mark
-todo todo
-todo todo
-duration duration  /hr 23 /min 23
 event event  /from 1111-11-11 /to 1111-11-11
+duration duration  /hr 10 /min 10
