@@ -32,7 +32,7 @@ public class YapPal {
     public YapPal() {
         this.parser = new Parser();
         this.ui = new Ui("YapPal");
-        this.storage = new Storage("data\\save.txt", ui, parser);
+        this.storage = new Storage("data/save.txt", ui, parser);
         // instantiate task list for TaskList object
         ArrayList<Task> tasks;
         // attempts to load save file, creates empty ArrayList if not found

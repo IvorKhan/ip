@@ -1,107 +1,56 @@
 package yappal;
 
-import org.junit.jupiter.api.BeforeEach;
 import yappal.task.Deadline;
 import yappal.task.Event;
-import yappal.task.Task;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
+import yappal.task.ToDo;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import yappal.task.ToDo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ParserTest {
-    static Parser parser;
+    private static Parser parser;
+
+    @BeforeAll
+    public static void beforeAll() {
+        parser = new Parser();
+    }
 
     @Test
     public void listen_terminate_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("bye".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(YapPal.State.TERMINATE, parser.listen());
-
-        System.setIn(systemIn);
+        assertEquals(YapPal.State.TERMINATE, parser.listen("bye"));
     }
 
     @Test
     public void listen_list_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("list".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.LIST);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("list"), YapPal.State.LIST);
     }
 
     @Test
     public void listen_mark_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("mark 1".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.MARK);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("mark 1"), YapPal.State.MARK);
     }
 
     @Test
     public void listen_unmark_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("unmark 1".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.UNMARK);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("unmark 1"), YapPal.State.UNMARK);
     }
 
     @Test
     public void listen_delete_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("delete 1".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.DELETE);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("delete 1"), YapPal.State.DELETE);
     }
 
     @Test
     public void listen_add_success() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("todo todo".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.ADD);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("todo todo"), YapPal.State.ADD);
     }
 
     @Test
     public void listen_notCommand_passToAdd() {
-        InputStream systemIn = System.in;
-        ByteArrayInputStream testIn = new ByteArrayInputStream("dfjsakflksja".getBytes());
-        System.setIn(testIn);
-        ParserTest.parser = new Parser();
-
-        assertEquals(parser.listen(), YapPal.State.ADD);
-
-        System.setIn(systemIn);
+        assertEquals(parser.listen("dfjsakflksja"), YapPal.State.ADD);
     }
 
     @Test
